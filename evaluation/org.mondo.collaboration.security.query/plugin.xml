@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><plugin>
+  <extension id="org.mondo.collaboration.security.query.LockQueries" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:org.mondo.collaboration.security.query.LockQueries" id="org.mondo.collaboration.security.query.LockQueries"/>
+  </extension>
+</plugin>

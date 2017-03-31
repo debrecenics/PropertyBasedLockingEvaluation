@@ -1,0 +1,21 @@
+user userA1 user userA2 user userA3 user userA4 user userA5 user userA6 user userA7 user userA8 user userA9 user userA10 user userA11 user userA12 user userA13 user userA14 user userA15
+user userB1 user userB2 user userB3 user userB4 user userB5 user userB6 user userB7 user userB8 user userB9 user userB10 user userB11 user userB12 user userB13 user userB14 user userB15
+user userC1 user userC2 user userC3 user userC4 user userC5 user userC6 user userC7 user userC8 user userC9 user userC10 user userC11 user userC12 user userC13 user userC14 user userC15
+
+group UserTypeA {
+	userA1, userA2, userA3, userA4, userA5, userA6, userA7, userA8, userA8, userA9, userA10, userA11, userA12, userA13, userA14, userA14
+}
+
+group UserTypeB {
+	userB1, userB2, userB3, userB4, userB5, userB6, userB7, userB8, userB8, userB9, userB10, userB11, userB12, userB13, userB14, userB14
+}
+
+group UserTypeC {
+	userC1, userC2, userC3, userC4, userC5, userC6, userC7, userC8, userC8, userC9, userC10, userC11, userC12, userC13, userC14, userC14
+}
+
+policy DemoPolicy first-applicable {
+	rule allowAll permit RW to UserTypeA, UserTypeB, UserTypeC {
+		query "org.mondo.collaboration.security.query.objectobject"
+	}
+}
