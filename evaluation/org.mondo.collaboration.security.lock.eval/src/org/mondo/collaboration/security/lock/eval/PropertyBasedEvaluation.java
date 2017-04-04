@@ -2,7 +2,9 @@ package org.mondo.collaboration.security.lock.eval;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 import org.eclipse.emf.common.util.URI;
 import org.eclipse.emf.ecore.EObject;
@@ -15,12 +17,14 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lens.bx.online.OnlineCollaborationSession;
 import org.mondo.collaboration.security.lens.correspondence.EObjectCorrespondence.UniqueIDScheme;
 import org.mondo.collaboration.security.lens.correspondence.EObjectCorrespondence.UniqueIDSchemeFactory;
+import org.mondo.collaboration.security.lock.eval.user.UserType;
 import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeAPBL;
 import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeBPBL;
 import org.mondo.collaboration.security.macl.xtext.AccessControlLanguageStandaloneSetup;
 import org.mondo.collaboration.security.mpbl.xtext.MondoPropertyBasedLockingStandaloneSetup;
 
-import wt.Cycle;
+import com.google.common.collect.Lists;
+
 import wt.Module;
 import wt.Signal;
 import wt.WtFactory;
@@ -30,7 +34,7 @@ public class PropertyBasedEvaluation {
 	
 	public static void main(String[] args) throws IncQueryException, InvocationTargetException, InterruptedException {
 		
-		String path = String.format("C:/Work/Eclipse/Models17-locking/workspace/org.mondo.collaboration.security.generator/instances/model-%04d-%04d.xmi".replace('/', File.separatorChar), Configuration.MODEL_SIZE, Configuration.VENDOR_SIZE);
+		String path = String.format("C:/Work/Eclipse/Models17-locking/workspace/org.mondo.collaboration.security.generator/instances/model-%04d-%04d-%04d.xmi".replace('/', File.separatorChar), Configuration.MODEL_SIZE, Configuration.DEEP_SIZE, Configuration.VENDOR_SIZE);
 		
 		EMFPatternLanguageStandaloneSetup.doSetup();
 		AccessControlLanguageStandaloneSetup.doSetup();
@@ -68,24 +72,38 @@ public class PropertyBasedEvaluation {
 				policyResourceSet.getResource(ruleFileUri, true), 
 				lockResourceSet.getResource(lockFileUri, true), "super", "dummy_password");	
 		
+		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= Configuration.TypeA; i++) {
 			URI front = URI.createFileURI(String.format("C:/Work/Eclipse/Models17-locking/workspace/org.mondo.collaboration.security.generator/instances/model-%04d-%04d-front-%s.xmi".replace('/', File.separatorChar), Configuration.MODEL_SIZE, Configuration.VENDOR_SIZE, "userA"+i));
-			Thread userA1 = new UserTypeAPBL(session, Cycle.get(i), "userB"+i, front).init();
-			userA1.setName("userA"+i);
-			userA1.start();	
+			UserType user = new UserTypeAPBL(session, "cycle."+(i%Configuration.VENDOR_SIZE), "userA"+i, front).init();
+			user.setName("userA"+i);
+			user.start();
+			users.add(user);
 		}
 		for(int i = 1; i <= Configuration.TypeB; i++) {
 			URI front = URI.createFileURI(String.format("C:/Work/Eclipse/Models17-locking/workspace/org.mondo.collaboration.security.generator/instances/model-%04d-%04d-front-%s.xmi".replace('/', File.separatorChar), Configuration.MODEL_SIZE, Configuration.VENDOR_SIZE, "userB"+i));
-			Thread userB1 = new UserTypeBPBL(session, "type."+(i%Configuration.VENDOR_SIZE), "userB"+i, front).init();
-			userB1.setName("userB"+i);
-			userB1.start();
-		}
+			UserType user = new UserTypeBPBL(session, "type."+(i%Configuration.VENDOR_SIZE), "userB"+i, front).init();
+			user.setName("userB"+i);
+			user.start();
+			users.add(user);
+			}
 		for(int i = 1; i <= Configuration.TypeC; i++) {
 			URI front = URI.createFileURI(String.format("C:/Work/Eclipse/Models17-locking/workspace/org.mondo.collaboration.security.generator/instances/model-%04d-%04d-front-%s.xmi".replace('/', File.separatorChar), Configuration.MODEL_SIZE, Configuration.VENDOR_SIZE, "userC"+i));
-			Thread userB1 = new UserTypeBPBL(session, "vendor."+(i%Configuration.VENDOR_SIZE), "userB"+i, front).init();
-			userB1.setName("userC"+i);
-			userB1.start();
+			UserType user = new UserTypeBPBL(session, "vendor."+(i%Configuration.VENDOR_SIZE), "userC"+i, front).init();
+			user.setName("userC"+i);
+			user.start();
+			users.add(user);
 		}
+		
+		int declined = 0;
+		int accepted = 0;
+		for (UserType user : users) {
+			user.join();
+			declined += user.getDeclined();
+			accepted += user.getAccepted();
+		}
+		
+		Logger.getGlobal().info(String.format("Accepted: %d Declined %d", accepted, declined));
 	}
 	
 	private static final class UniqueIDSchemeFactoryImplementation implements UniqueIDSchemeFactory {

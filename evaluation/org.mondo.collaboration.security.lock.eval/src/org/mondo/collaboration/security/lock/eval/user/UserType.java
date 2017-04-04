@@ -1,15 +1,35 @@
 package org.mondo.collaboration.security.lock.eval.user;
 
 
-import java.util.logging.Logger;
-
 import org.eclipse.emf.ecore.resource.Resource;
+import org.eclipse.emf.transaction.RecordingCommand;
+import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.Configuration;
 
-public abstract class UserType extends Thread {
+public abstract class UserType {
+
+	private int declined = 0;
+	private int accepted = 0;
+	
+	private String name;
+	
+	private boolean lockGranted = false;
+	
+	private final class RecordingCommandExtension extends RecordingCommand {
+		public boolean lockViolated = false;
+
+		private RecordingCommandExtension(TransactionalEditingDomain domain) {
+			super(domain);
+		}
+
+		@Override
+		protected void doExecute() {
+			lockViolated = !doOperations();
+		}
+	}
 
 	public enum Direction {
 		FORWARD, BACKWARD
@@ -18,12 +38,11 @@ public abstract class UserType extends Thread {
 	protected final Resource model;
 	protected IncQueryEngine engine;
 	protected Direction dir = Direction.FORWARD;
-	private Logger logger;
+	
+	protected long compensation = 0;
 	
 	public UserType(Resource model) {
 		this.model = model;
-		this.logger = Logger.getGlobal();
-		
 	}
 	
 	public UserType init() {
@@ -35,29 +54,41 @@ public abstract class UserType extends Thread {
 		return this;
 	}
 	
-	protected boolean acquireLock() {
-		synchronized (engine) {
-			return doAcquireLock();
-		}
+	public final boolean requestLock() {
+		lockGranted = doAcquireLock();
+		if(!lockGranted)
+			setDeclined(getDeclined() + 1);
+		
+		return lockGranted;
 	}
 	
-	protected void releaseLock() {
-		synchronized (engine) {
+	public final void releaseLock() {
+		if(lockGranted) {
 			doReleaseLock();
-		}
-	}
-
-	protected void operate() {
-		synchronized (engine) {
-			doOperations();
+			lockGranted = false;
 		}
 	}
 	
-	public abstract boolean doAcquireLock();
+	public final boolean operate() {
+		if(!lockGranted) return false;
+		
+		RecordingCommandExtension command = new RecordingCommandExtension(Configuration.domain);
+		Configuration.domain.getCommandStack().execute(command);
+		if(command.lockViolated) {
+			setDeclined(getDeclined() + 1);
+			Configuration.domain.getCommandStack().undo();
+			return false;
+		} else {
+			setAccepted(getAccepted() + 1);
+			return true;
+		}
+	}
 	
-	public abstract void doReleaseLock();
+	protected abstract boolean doAcquireLock();
+	
+	protected abstract void doReleaseLock();
 
-	public void doOperations() { updateDirection(); }
+	protected boolean doOperations() { updateDirection(); return true; }
 	
 	protected void updateDirection() {
 		if (dir == Direction.FORWARD)
@@ -66,30 +97,28 @@ public abstract class UserType extends Thread {
 			dir = Direction.FORWARD;
 	}
 	
-	@Override
-	public void run() {
-		for(int i = 0; i < Configuration.Operations; i++) {
-			try{
-				Thread.sleep(nextWaitTime());
-				if(acquireLock()) {
-					logger.info(String.format("Granted to User: %s", getName()));
-					operate();
-					Thread.sleep(nextWaitTime() / 2);
-					logger.info(String.format("Executed by: %s", getName()));
-					releaseLock();	
-					logger.info(String.format("Released by: %s", getName()));
-				} else 	{
-					logger.info(String.format("Declined: %s", getName()));
-				}
-			}
-			catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	public int getDeclined() {
+		return declined;
 	}
 
-	private long nextWaitTime() {
-		return (long) (Configuration.Distribution.getNext()*1000);
+	protected void setDeclined(int declined) {
+		this.declined = declined;
+	}
+
+	public int getAccepted() {
+		return accepted;
+	}
+
+	protected void setAccepted(int accepted) {
+		this.accepted = accepted;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 	
 }

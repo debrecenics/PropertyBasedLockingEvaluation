@@ -7,7 +7,7 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.patternlanguage.emf.eMFPatternLanguage.PatternModel;
 import org.eclipse.incquery.patternlanguage.patternLanguage.Pattern;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.mondo.collaboration.security.lens.bx.online.OnlineCollaborationSession;
+import org.mondo.collaboration.security.lock.eval.lock.PropertyBasedLocker;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Binding;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Lock;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.MondoPropertyBasedLockingFactory;
@@ -18,13 +18,13 @@ import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Val
 
 public class UtilityClass {
 
-	public static Lock buildLock(String name, String pattern, Map<String,String> bindings, OnlineCollaborationSession session) {
+	public static Lock buildLock(String name, String pattern, Map<String,String> bindings, PropertyBasedLocker locker) {
 		Lock lock = MondoPropertyBasedLockingFactory.eINSTANCE.createLock();
-		lock.setOwner(getUser(name, session));
-		lock.setPattern(getPattern(pattern,session));
+		lock.setOwner(getUser(name, locker));
+		lock.setPattern(getPattern(pattern, locker));
 		for (String param : bindings.keySet()) {
 			Binding binding = MondoPropertyBasedLockingFactory.eINSTANCE.createBinding();
-			binding.setParam(getPattern(pattern, session).getParameters().stream().filter((var) -> var.getName().equals(param)).findFirst().get());
+			binding.setParam(getPattern(pattern, locker).getParameters().stream().filter((var) -> var.getName().equals(param)).findFirst().get());
 			ValueBind valueBind = MondoPropertyBasedLockingFactory.eINSTANCE.createValueBind();
 			valueBind.setValue(bindings.get(param));
 			binding.setValue(valueBind);
@@ -33,8 +33,8 @@ public class UtilityClass {
 		return lock;
 	}
 
-	private static Pattern getPattern(String patternName, OnlineCollaborationSession session) {
-		Resource queryResource = session.getLockResource().getResourceSet().getResources().get(0);
+	private static Pattern getPattern(String patternName, PropertyBasedLocker locker) {
+		Resource queryResource = locker.getLockingModel().eResource().getResourceSet().getResources().get(0);
 		EObject eObject = queryResource.getContents().get(0);
 		PatternModel patternModel = (PatternModel) eObject;
 		for (Pattern pattern : patternModel.getPatterns()) {
@@ -44,9 +44,8 @@ public class UtilityClass {
 		return null;
 	}
 
-	private static User getUser(String name, OnlineCollaborationSession session) {
-		EObject eObject = session.getLockResource().getContents().get(0);
-		PropertyBasedLockingModel lockModel = (PropertyBasedLockingModel) eObject;
+	private static User getUser(String name, PropertyBasedLocker locker) {
+		PropertyBasedLockingModel lockModel = locker.getLockingModel();
 		for (Role role : lockModel.getRoles()) {
 			if(role instanceof User) {
 				User user = (User) role;
@@ -57,20 +56,18 @@ public class UtilityClass {
 		return null;
 	}
 	
-	public static void acquireLock(OnlineCollaborationSession session, Lock lock) throws IncQueryException {
-		EObject eObject = session.getLockResource().getContents().get(0);
-		PropertyBasedLockingModel lockModel = (PropertyBasedLockingModel) eObject;
+	public static void acquireLock(PropertyBasedLocker locker, Lock lock) throws IncQueryException {
+		PropertyBasedLockingModel lockModel = locker.getLockingModel();
 		lockModel.getLocks().add(lock);
-		session.reinitializeWith(session.getPolicyResource(), session.getLockResource());
-		System.out.println(String.format("%s acquired locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
+		locker.reinitializeWith(lockModel);
+//		System.out.println(String.format("%s acquired locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
 	}
 
-	public static void releaseLock(OnlineCollaborationSession session, Lock lock) throws IncQueryException {
-		EObject eObject = session.getLockResource().getContents().get(0);
-		PropertyBasedLockingModel lockModel = (PropertyBasedLockingModel) eObject;
+	public static void releaseLock(PropertyBasedLocker locker, Lock lock) throws IncQueryException {
+		PropertyBasedLockingModel lockModel = locker.getLockingModel();
 		lockModel.getLocks().remove(lock);
-		session.reinitializeWith(session.getPolicyResource(), session.getLockResource());
-		System.out.println(String.format("%s released locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
+		locker.reinitializeWith(lockModel);
+		//		System.out.println(String.format("%s released locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
 	}
 	
 }

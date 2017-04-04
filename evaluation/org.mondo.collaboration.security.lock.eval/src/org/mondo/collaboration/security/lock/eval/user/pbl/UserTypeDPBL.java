@@ -6,25 +6,25 @@ import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lens.arbiter.LockArbiter.LockMonitoringSession;
 import org.mondo.collaboration.security.lock.eval.lock.PropertyBasedLocker;
-import org.mondo.collaboration.security.lock.eval.user.UserTypeB;
+import org.mondo.collaboration.security.lock.eval.user.UserTypeD;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Lock;
 
 import com.google.common.collect.Maps;
 
-public class UserTypeBPBL extends UserTypeB {
+public class UserTypeDPBL extends UserTypeD {
 
 	private Lock lock;
 	private PropertyBasedLocker locker;
 
-	public UserTypeBPBL(PropertyBasedLocker locker, Resource model, String type, String name) {
-		super(model, type);
+	public UserTypeDPBL(PropertyBasedLocker locker, Resource model, String vendor, String name) {
+		super(model, vendor);
 		this.locker = locker;
-		this.lock = UtilityClass.buildLock(name,"lockB", buildBindings(), locker);
+		this.lock = UtilityClass.buildLock(name,"lockC", buildBindings(), locker);
 	}
-	
+
 	private Map<String,String> buildBindings() {
 		Map<String,String> bindings = Maps.newHashMap();
-		bindings.put("type", type);
+		bindings.put("vendor", vendor);
 		return bindings;
 	}
 
@@ -67,4 +67,5 @@ public class UserTypeBPBL extends UserTypeB {
 			e.printStackTrace();
 		}
 	}	
+	
 }

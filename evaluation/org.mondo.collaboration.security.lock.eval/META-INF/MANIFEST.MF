@@ -15,4 +15,6 @@ Require-Bundle: org.eclipse.emf.ecore,
  org.eclipse.incquery.patternlanguage.emf,
  org.mondo.collaboration.security.macl.xtext,
  org.mondo.collaboration.security.mpbl.xtext,
- org.eclipse.viatra.modelobfuscator.runtime
+ org.eclipse.viatra.modelobfuscator.runtime,
+ org.mondo.collaboration.security.macl.xtext.rule;bundle-version="1.0.0",
+ org.eclipse.emf.transaction;bundle-version="1.9.0"

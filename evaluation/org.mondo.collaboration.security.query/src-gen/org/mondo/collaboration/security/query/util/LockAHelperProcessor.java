@@ -3,7 +3,6 @@ package org.mondo.collaboration.security.query.util;
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
 import org.mondo.collaboration.security.query.LockAHelperMatch;
 import wt.Control;
-import wt.Cycle;
 import wt.Signal;
 
 /**
@@ -22,7 +21,7 @@ public abstract class LockAHelperProcessor implements IMatchProcessor<LockAHelpe
    * @param pCtrl the value of pattern parameter ctrl in the currently processed match
    * 
    */
-  public abstract void process(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl);
+  public abstract void process(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl);
   
   @Override
   public void process(final LockAHelperMatch match) {

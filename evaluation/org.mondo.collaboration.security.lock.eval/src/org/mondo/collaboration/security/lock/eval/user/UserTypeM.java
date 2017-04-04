@@ -6,17 +6,17 @@ import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.query.LockAMatch;
 import org.mondo.collaboration.security.query.LockAMatcher;
 
-public abstract class UserTypeA extends UserType {
+public abstract class UserTypeM extends UserType {
 
 	protected String cycle;
 
-	public UserTypeA(Resource model, String cycle) {
+	public UserTypeM(Resource model, String cycle) {
 		super(model);
 		this.cycle = cycle;
 	}
 	
 	@Override
-	public void doOperations() {
+	protected boolean doOperations() {
 		try {
 			LockAMatcher matcher = LockAMatcher.on(engine);
 			LockAMatch filter = matcher.newEmptyMatch();
@@ -37,6 +37,6 @@ public abstract class UserTypeA extends UserType {
 		} catch (IncQueryException e) {
 			e.printStackTrace();
 		}		
-		super.doOperations();
+		return super.doOperations();
 	}
 }

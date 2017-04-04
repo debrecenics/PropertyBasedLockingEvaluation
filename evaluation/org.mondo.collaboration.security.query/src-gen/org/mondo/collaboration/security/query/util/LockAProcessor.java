@@ -2,7 +2,6 @@ package org.mondo.collaboration.security.query.util;
 
 import org.eclipse.incquery.runtime.api.IMatchProcessor;
 import org.mondo.collaboration.security.query.LockAMatch;
-import wt.Cycle;
 import wt.Signal;
 
 /**
@@ -20,7 +19,7 @@ public abstract class LockAProcessor implements IMatchProcessor<LockAMatch> {
    * @param pValue the value of pattern parameter value in the currently processed match
    * 
    */
-  public abstract void process(final Signal pSignal, final Cycle pCycle, final Integer pValue);
+  public abstract void process(final Signal pSignal, final String pCycle, final Integer pValue);
   
   @Override
   public void process(final LockAMatch match) {

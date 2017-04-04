@@ -6,7 +6,6 @@ import org.eclipse.incquery.runtime.api.IPatternMatch;
 import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.query.util.LockAQuerySpecification;
-import wt.Cycle;
 import wt.Signal;
 
 /**
@@ -26,13 +25,13 @@ import wt.Signal;
 public abstract class LockAMatch extends BasePatternMatch {
   private Signal fSignal;
   
-  private Cycle fCycle;
+  private String fCycle;
   
   private Integer fValue;
   
   private static List<String> parameterNames = makeImmutableList("signal", "cycle", "value");
   
-  private LockAMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  private LockAMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     this.fSignal = pSignal;
     this.fCycle = pCycle;
     this.fValue = pValue;
@@ -50,7 +49,7 @@ public abstract class LockAMatch extends BasePatternMatch {
     return this.fSignal;
   }
   
-  public Cycle getCycle() {
+  public String getCycle() {
     return this.fCycle;
   }
   
@@ -66,7 +65,7 @@ public abstract class LockAMatch extends BasePatternMatch {
     	return true;
     }
     if ("cycle".equals(parameterName) ) {
-    	this.fCycle = (wt.Cycle) newValue;
+    	this.fCycle = (java.lang.String) newValue;
     	return true;
     }
     if ("value".equals(parameterName) ) {
@@ -81,7 +80,7 @@ public abstract class LockAMatch extends BasePatternMatch {
     this.fSignal = pSignal;
   }
   
-  public void setCycle(final Cycle pCycle) {
+  public void setCycle(final String pCycle) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fCycle = pCycle;
   }
@@ -190,7 +189,7 @@ public abstract class LockAMatch extends BasePatternMatch {
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static LockAMatch newMutableMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public static LockAMatch newMutableMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     return new Mutable(pSignal, pCycle, pValue);
   }
   
@@ -204,12 +203,12 @@ public abstract class LockAMatch extends BasePatternMatch {
    * @return the (partial) match object.
    * 
    */
-  public static LockAMatch newMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public static LockAMatch newMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     return new Immutable(pSignal, pCycle, pValue);
   }
   
   private static final class Mutable extends LockAMatch {
-    Mutable(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+    Mutable(final Signal pSignal, final String pCycle, final Integer pValue) {
       super(pSignal, pCycle, pValue);
     }
     
@@ -220,7 +219,7 @@ public abstract class LockAMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends LockAMatch {
-    Immutable(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+    Immutable(final Signal pSignal, final String pCycle, final Integer pValue) {
       super(pSignal, pCycle, pValue);
     }
     

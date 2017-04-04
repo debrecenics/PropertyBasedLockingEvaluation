@@ -3,13 +3,13 @@ package org.mondo.collaboration.security.query
 import "http://wt/access-control"
 import "http://www.eclipse.org/emf/2002/Ecore"
 
-pattern lockA(signal :Signal, cycle :Cycle, value) {
+pattern lockA(signal :Signal, cycle, value) {
 	Control.cycle(ctrl, cycle);
 	Control.provides(ctrl, signal);
 	Signal.frequency(signal, value);
 }
 
-pattern lockAHelper(signal :Signal, cycle :Cycle, value, ctrl :Control) {
+pattern lockAHelper(signal :Signal, cycle, value, ctrl :Control) {
 	Control.cycle(ctrl, cycle);
 	Control.provides(ctrl, signal);
 	Signal.frequency(signal, value);

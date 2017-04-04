@@ -14,7 +14,6 @@ import org.mondo.collaboration.security.query.LockAHelperMatcher;
 import com.google.common.collect.Sets;
 
 import wt.Control;
-import wt.Cycle;
 import wt.Signal;
 
 public class UserTypeAMBL extends UserTypeA {
@@ -22,7 +21,7 @@ public class UserTypeAMBL extends UserTypeA {
 	private ModelBasedLocker locker;
 	private Set<String> identifiers = Sets.newHashSet();
 
-	public UserTypeAMBL(Resource model, Cycle cycle, ModelBasedLocker locker) {
+	public UserTypeAMBL(Resource model, String cycle, ModelBasedLocker locker) {
 		super(model, cycle);
 		this.locker = locker;
 	}

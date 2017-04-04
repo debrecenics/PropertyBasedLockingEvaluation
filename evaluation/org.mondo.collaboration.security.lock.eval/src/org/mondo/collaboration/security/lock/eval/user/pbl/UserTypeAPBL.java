@@ -15,21 +15,19 @@ import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Loc
 
 import com.google.common.collect.Maps;
 
-import wt.Cycle;
-
 public class UserTypeAPBL extends UserTypeA {
 
 	private Leg leg;
 	private OnlineCollaborationSession session;
 	private Lock lock;
 
-	private UserTypeAPBL(Leg leg, Cycle cycle, URI frontConfinementUri) {
+	private UserTypeAPBL(Leg leg, String cycle, URI frontConfinementUri) {
 		super(leg.getFrontResourceSet().getResource(frontConfinementUri, true), cycle);
 		this.leg = leg;
 	}
 	
 	@SuppressWarnings("deprecation")
-	public UserTypeAPBL(OnlineCollaborationSession session, Cycle cycle, String name, URI frontConfinementUri) throws InvocationTargetException {
+	public UserTypeAPBL(OnlineCollaborationSession session, String cycle, String name, URI frontConfinementUri) throws InvocationTargetException {
 		this(session.new Leg(name, new StringObfuscator("a", "a"), true, new ResourceSetImpl(), frontConfinementUri), cycle, frontConfinementUri);
 		this.session = session;
 		this.lock = UtilityClass.buildLock(name,"lockA", buildBindings(), session);
@@ -37,7 +35,7 @@ public class UserTypeAPBL extends UserTypeA {
 	
 	private Map<String,String> buildBindings() {
 		Map<String,String> bindings = Maps.newHashMap();
-		bindings.put("cycle", cycle.getName());
+		bindings.put("cycle", cycle);
 		return bindings;
 	}
 
@@ -57,7 +55,9 @@ public class UserTypeAPBL extends UserTypeA {
 		super.doOperations();
 		DenialReason reason = leg.trySubmitModification();
 		if(reason != null) {
-			System.out.println(reason.prettyPrintProblem());
+			setDeclined(getDeclined() + 1);
+		} else {
+			setAccepted(getAccepted() + 1);
 		}
 	}
 	
@@ -77,7 +77,7 @@ public class UserTypeAPBL extends UserTypeA {
 	
 	@Override
 	protected void releaseLock() {
-		synchronized (leg) {
+		synchronized (session) {
 			doReleaseLock();
 		}
 	}

@@ -14,7 +14,6 @@ import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.mondo.collaboration.security.query.LockAMatch;
 import org.mondo.collaboration.security.query.util.LockAQuerySpecification;
-import wt.Cycle;
 import wt.Signal;
 
 /**
@@ -28,7 +27,7 @@ import wt.Signal;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern lockA(signal :Signal, cycle :Cycle, value) {
+ * pattern lockA(signal :Signal, cycle, value) {
  * 	Control.cycle(ctrl, cycle);
  * 	Control.provides(ctrl, signal);
  * 	Signal.frequency(signal, value);
@@ -107,7 +106,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return matches represented as a LockAMatch object.
    * 
    */
-  public Collection<LockAMatch> getAllMatches(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public Collection<LockAMatch> getAllMatches(final Signal pSignal, final String pCycle, final Integer pValue) {
     return rawGetAllMatches(new Object[]{pSignal, pCycle, pValue});
   }
   
@@ -120,7 +119,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return a match represented as a LockAMatch object, or null if no match is found.
    * 
    */
-  public LockAMatch getOneArbitraryMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public LockAMatch getOneArbitraryMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     return rawGetOneArbitraryMatch(new Object[]{pSignal, pCycle, pValue});
   }
   
@@ -133,7 +132,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public boolean hasMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     return rawHasMatch(new Object[]{pSignal, pCycle, pValue});
   }
   
@@ -145,7 +144,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public int countMatches(final Signal pSignal, final String pCycle, final Integer pValue) {
     return rawCountMatches(new Object[]{pSignal, pCycle, pValue});
   }
   
@@ -157,7 +156,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue, final IMatchProcessor<? super LockAMatch> processor) {
+  public void forEachMatch(final Signal pSignal, final String pCycle, final Integer pValue, final IMatchProcessor<? super LockAMatch> processor) {
     rawForEachMatch(new Object[]{pSignal, pCycle, pValue}, processor);
   }
   
@@ -171,7 +170,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue, final IMatchProcessor<? super LockAMatch> processor) {
+  public boolean forOneArbitraryMatch(final Signal pSignal, final String pCycle, final Integer pValue, final IMatchProcessor<? super LockAMatch> processor) {
     return rawForOneArbitraryMatch(new Object[]{pSignal, pCycle, pValue}, processor);
   }
   
@@ -185,7 +184,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the (partial) match object.
    * 
    */
-  public LockAMatch newMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue) {
+  public LockAMatch newMatch(final Signal pSignal, final String pCycle, final Integer pValue) {
     return LockAMatch.newMatch(pSignal, pCycle, pValue);
   }
   
@@ -223,7 +222,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Signal> getAllValuesOfsignal(final Cycle pCycle, final Integer pValue) {
+  public Set<Signal> getAllValuesOfsignal(final String pCycle, final Integer pValue) {
     return rawAccumulateAllValuesOfsignal(new Object[]{
     null, 
     pCycle, 
@@ -236,8 +235,8 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<Cycle> rawAccumulateAllValuesOfcycle(final Object[] parameters) {
-    Set<Cycle> results = new HashSet<Cycle>();
+  protected Set<String> rawAccumulateAllValuesOfcycle(final Object[] parameters) {
+    Set<String> results = new HashSet<String>();
     rawAccumulateAllValues(POSITION_CYCLE, parameters, results);
     return results;
   }
@@ -247,7 +246,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Cycle> getAllValuesOfcycle() {
+  public Set<String> getAllValuesOfcycle() {
     return rawAccumulateAllValuesOfcycle(emptyArray());
   }
   
@@ -256,7 +255,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Cycle> getAllValuesOfcycle(final LockAMatch partialMatch) {
+  public Set<String> getAllValuesOfcycle(final LockAMatch partialMatch) {
     return rawAccumulateAllValuesOfcycle(partialMatch.toArray());
   }
   
@@ -265,7 +264,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Cycle> getAllValuesOfcycle(final Signal pSignal, final Integer pValue) {
+  public Set<String> getAllValuesOfcycle(final Signal pSignal, final Integer pValue) {
     return rawAccumulateAllValuesOfcycle(new Object[]{
     pSignal, 
     null, 
@@ -307,7 +306,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Integer> getAllValuesOfvalue(final Signal pSignal, final Cycle pCycle) {
+  public Set<Integer> getAllValuesOfvalue(final Signal pSignal, final String pCycle) {
     return rawAccumulateAllValuesOfvalue(new Object[]{
     pSignal, 
     pCycle, 
@@ -318,7 +317,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
   @Override
   protected LockAMatch tupleToMatch(final Tuple t) {
     try {
-    	return LockAMatch.newMatch((wt.Signal) t.get(POSITION_SIGNAL), (wt.Cycle) t.get(POSITION_CYCLE), (java.lang.Integer) t.get(POSITION_VALUE));
+    	return LockAMatch.newMatch((wt.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_CYCLE), (java.lang.Integer) t.get(POSITION_VALUE));
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in tuple not properly typed!",e);
     	return null;
@@ -328,7 +327,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
   @Override
   protected LockAMatch arrayToMatch(final Object[] match) {
     try {
-    	return LockAMatch.newMatch((wt.Signal) match[POSITION_SIGNAL], (wt.Cycle) match[POSITION_CYCLE], (java.lang.Integer) match[POSITION_VALUE]);
+    	return LockAMatch.newMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_CYCLE], (java.lang.Integer) match[POSITION_VALUE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;
@@ -338,7 +337,7 @@ public class LockAMatcher extends BaseMatcher<LockAMatch> {
   @Override
   protected LockAMatch arrayToMatchMutable(final Object[] match) {
     try {
-    	return LockAMatch.newMutableMatch((wt.Signal) match[POSITION_SIGNAL], (wt.Cycle) match[POSITION_CYCLE], (java.lang.Integer) match[POSITION_VALUE]);
+    	return LockAMatch.newMutableMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_CYCLE], (java.lang.Integer) match[POSITION_VALUE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;

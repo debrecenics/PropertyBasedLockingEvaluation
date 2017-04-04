@@ -1,14 +1,12 @@
-package org.mondo.collaboration.security.lock.eval.user.trd;
+package org.mondo.collaboration.security.lock.eval.user.fbl;
 
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.emf.ecore.util.EcoreUtil;
-import org.eclipse.incquery.runtime.api.IncQueryEngine;
-import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.mondo.collaboration.security.lock.eval.lock.TraditionalLocker;
-import org.mondo.collaboration.security.lock.eval.user.UserTypeA;
+import org.mondo.collaboration.security.lock.eval.lock.FileBasedLocker;
+import org.mondo.collaboration.security.lock.eval.user.UserTypeM;
 import org.mondo.collaboration.security.query.LockAHelperMatch;
 import org.mondo.collaboration.security.query.LockAHelperMatcher;
 
@@ -17,22 +15,20 @@ import com.google.common.collect.Sets;
 import wt.Control;
 import wt.Signal;
 
-public class UserTypeATRD extends UserTypeA {
+public class UserTypeMFBL extends UserTypeM {
 
-	private TraditionalLocker locker;
+	private FileBasedLocker locker;
 	private Set<String> identifiers = Sets.newHashSet();
 
-	public UserTypeATRD(Resource model, String cycle, TraditionalLocker locker) {
+	public UserTypeMFBL(Resource model, String cycle, FileBasedLocker locker) {
 		super(model, cycle);
 		this.locker = locker;
 	}
 	
 	@Override
-	public boolean doAcquireLock() {
+	protected boolean doAcquireLock() {
 		
-		IncQueryEngine engine;
 		try {
-			engine = IncQueryEngine.on(new EMFScope(model));
 			LockAHelperMatcher matcher = LockAHelperMatcher.on(engine);
 			LockAHelperMatch filter = matcher.newEmptyMatch();
 			filter.setCycle(cycle);
@@ -53,7 +49,7 @@ public class UserTypeATRD extends UserTypeA {
 	}
 	
 	@Override
-	public void doReleaseLock() {
+	protected void doReleaseLock() {
 		locker.releaseLock(identifiers, getName());
 		identifiers.clear();
 	}

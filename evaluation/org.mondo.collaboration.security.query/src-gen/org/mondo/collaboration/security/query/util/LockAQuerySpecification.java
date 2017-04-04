@@ -5,12 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import org.eclipse.emf.ecore.EClass;
-import org.eclipse.emf.ecore.EDataType;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedEMFPQuery;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedEMFQuerySpecification;
 import org.eclipse.incquery.runtime.emf.types.EClassTransitiveInstancesKey;
-import org.eclipse.incquery.runtime.emf.types.EDataTypeInSlotsKey;
 import org.eclipse.incquery.runtime.emf.types.EStructuralFeatureInstancesKey;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.psystem.PBody;
@@ -62,7 +60,7 @@ public final class LockAQuerySpecification extends BaseGeneratedEMFQuerySpecific
   
   @Override
   public LockAMatch newMatch(final Object... parameters) {
-    return LockAMatch.newMatch((wt.Signal) parameters[0], (wt.Cycle) parameters[1], (java.lang.Integer) parameters[2]);
+    return LockAMatch.newMatch((wt.Signal) parameters[0], (java.lang.String) parameters[1], (java.lang.Integer) parameters[2]);
   }
   
   private static class LazyHolder {
@@ -88,7 +86,7 @@ public final class LockAQuerySpecification extends BaseGeneratedEMFQuerySpecific
     
     @Override
     public List<PParameter> getParameters() {
-      return Arrays.asList(new PParameter("signal", "wt.Signal"),new PParameter("cycle", "wt.Cycle"),new PParameter("value", "java.lang.Integer"));
+      return Arrays.asList(new PParameter("signal", "wt.Signal"),new PParameter("cycle", "java.lang.String"),new PParameter("value", "java.lang.Integer"));
     }
     
     @Override
@@ -102,7 +100,6 @@ public final class LockAQuerySpecification extends BaseGeneratedEMFQuerySpecific
       		PVariable var_value = body.getOrCreateVariableByName("value");
       		PVariable var_ctrl = body.getOrCreateVariableByName("ctrl");
       		new TypeConstraint(body, new FlatTuple(var_signal), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Signal")));
-      		new TypeConstraint(body, new FlatTuple(var_cycle), new EDataTypeInSlotsKey((EDataType)getClassifierLiteral("http://wt/access-control", "Cycle")));
       		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
       		   new ExportedParameter(body, var_signal, "signal"),
       		   new ExportedParameter(body, var_cycle, "cycle"),

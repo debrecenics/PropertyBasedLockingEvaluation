@@ -55,7 +55,9 @@ public class UserTypeCPBL extends UserTypeC {
 		super.doOperations();
 		DenialReason reason = leg.trySubmitModification();
 		if(reason != null) {
-			System.out.println(reason.prettyPrintProblem());
+			setDeclined(getDeclined() + 1);
+		} else {
+			setAccepted(getAccepted() + 1);
 		}
 	}
 	

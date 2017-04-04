@@ -22,7 +22,7 @@ public abstract class UserTypeB extends UserType {
 	}
 	
 	@Override
-	public void doOperations() {
+	protected boolean doOperations() {
 		try {
 			LockBMatcher matcher = LockBMatcher.on(engine);
 			LockBMatch filter = matcher.newEmptyMatch();
@@ -49,6 +49,6 @@ public abstract class UserTypeB extends UserType {
 		} catch (IncQueryException e) {
 			e.printStackTrace();
 		}		
-		super.doOperations();
+		return super.doOperations();		
 	}
 }

@@ -1,19 +1,21 @@
 package org.mondo.collaboration.security.lock.eval.distribution;
 
-import java.util.Random;
+import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.random.JDKRandomGenerator;
 
 public class Exponential implements IDistribution {
 
-	private Random rand = new Random();
-	private double lambda;
-	
-	public Exponential(double lambda) {
-		this.lambda = lambda;
-	}
-	
+	private JDKRandomGenerator rand;
+    private ExponentialDistribution distribution;
+    
+	public Exponential(double mean) {
+    	this.rand = new JDKRandomGenerator();
+        this.distribution = new ExponentialDistribution(rand, mean);
+    }
+    
 	@Override
 	public double getNext() {
-	    return  Math.log(1-rand.nextDouble())/(-lambda);
+		return distribution.sample();
 	}
 
 }

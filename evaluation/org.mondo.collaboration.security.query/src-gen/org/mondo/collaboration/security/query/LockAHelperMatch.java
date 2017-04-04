@@ -7,7 +7,6 @@ import org.eclipse.incquery.runtime.api.impl.BasePatternMatch;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.query.util.LockAHelperQuerySpecification;
 import wt.Control;
-import wt.Cycle;
 import wt.Signal;
 
 /**
@@ -27,7 +26,7 @@ import wt.Signal;
 public abstract class LockAHelperMatch extends BasePatternMatch {
   private Signal fSignal;
   
-  private Cycle fCycle;
+  private String fCycle;
   
   private Integer fValue;
   
@@ -35,7 +34,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
   
   private static List<String> parameterNames = makeImmutableList("signal", "cycle", "value", "ctrl");
   
-  private LockAHelperMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl) {
+  private LockAHelperMatch(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl) {
     this.fSignal = pSignal;
     this.fCycle = pCycle;
     this.fValue = pValue;
@@ -55,7 +54,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
     return this.fSignal;
   }
   
-  public Cycle getCycle() {
+  public String getCycle() {
     return this.fCycle;
   }
   
@@ -75,7 +74,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
     	return true;
     }
     if ("cycle".equals(parameterName) ) {
-    	this.fCycle = (wt.Cycle) newValue;
+    	this.fCycle = (java.lang.String) newValue;
     	return true;
     }
     if ("value".equals(parameterName) ) {
@@ -94,7 +93,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
     this.fSignal = pSignal;
   }
   
-  public void setCycle(final Cycle pCycle) {
+  public void setCycle(final String pCycle) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
     this.fCycle = pCycle;
   }
@@ -214,7 +213,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static LockAHelperMatch newMutableMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl) {
+  public static LockAHelperMatch newMutableMatch(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl) {
     return new Mutable(pSignal, pCycle, pValue, pCtrl);
   }
   
@@ -229,12 +228,12 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
    * @return the (partial) match object.
    * 
    */
-  public static LockAHelperMatch newMatch(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl) {
+  public static LockAHelperMatch newMatch(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl) {
     return new Immutable(pSignal, pCycle, pValue, pCtrl);
   }
   
   private static final class Mutable extends LockAHelperMatch {
-    Mutable(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl) {
+    Mutable(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl) {
       super(pSignal, pCycle, pValue, pCtrl);
     }
     
@@ -245,7 +244,7 @@ public abstract class LockAHelperMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends LockAHelperMatch {
-    Immutable(final Signal pSignal, final Cycle pCycle, final Integer pValue, final Control pCtrl) {
+    Immutable(final Signal pSignal, final String pCycle, final Integer pValue, final Control pCtrl) {
       super(pSignal, pCycle, pValue, pCtrl);
     }
     
