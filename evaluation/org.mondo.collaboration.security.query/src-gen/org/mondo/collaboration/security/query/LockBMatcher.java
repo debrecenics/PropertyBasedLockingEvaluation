@@ -32,6 +32,7 @@ import wt.Signal;
  * 	Control.type(ctrl, type);
  * 	Control.provides(ctrl, signal);
  * 	Module.consumes(module, signal);
+ * 	//Signal.type(signal, ::Output);
  * }
  * </pre></code>
  * 

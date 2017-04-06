@@ -60,7 +60,7 @@ public final class LockCQuerySpecification extends BaseGeneratedEMFQuerySpecific
   
   @Override
   public LockCMatch newMatch(final Object... parameters) {
-    return LockCMatch.newMatch((wt.Signal) parameters[0], (java.lang.String) parameters[1], (java.lang.Integer) parameters[2], (java.lang.String) parameters[3]);
+    return LockCMatch.newMatch((wt.Signal) parameters[0], (java.lang.String) parameters[1]);
   }
   
   private static class LazyHolder {
@@ -81,12 +81,12 @@ public final class LockCQuerySpecification extends BaseGeneratedEMFQuerySpecific
     
     @Override
     public List<String> getParameterNames() {
-      return Arrays.asList("signal","vendor","frequency","id");
+      return Arrays.asList("signal","vendor");
     }
     
     @Override
     public List<PParameter> getParameters() {
-      return Arrays.asList(new PParameter("signal", "wt.Signal"),new PParameter("vendor", "java.lang.String"),new PParameter("frequency", "java.lang.Integer"),new PParameter("id", "java.lang.String"));
+      return Arrays.asList(new PParameter("signal", "wt.Signal"),new PParameter("vendor", "java.lang.String"));
     }
     
     @Override
@@ -97,16 +97,12 @@ public final class LockCQuerySpecification extends BaseGeneratedEMFQuerySpecific
       		PBody body = new PBody(this);
       		PVariable var_signal = body.getOrCreateVariableByName("signal");
       		PVariable var_vendor = body.getOrCreateVariableByName("vendor");
-      		PVariable var_frequency = body.getOrCreateVariableByName("frequency");
-      		PVariable var_id = body.getOrCreateVariableByName("id");
       		PVariable var_composite = body.getOrCreateVariableByName("composite");
       		PVariable var_control = body.getOrCreateVariableByName("control");
       		new TypeConstraint(body, new FlatTuple(var_signal), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Signal")));
       		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
       		   new ExportedParameter(body, var_signal, "signal"),
-      		   new ExportedParameter(body, var_vendor, "vendor"),
-      		   new ExportedParameter(body, var_frequency, "frequency"),
-      		   new ExportedParameter(body, var_id, "id")
+      		   new ExportedParameter(body, var_vendor, "vendor")
       		));
       		// 	Composite.vendor(composite,vendor)
       		new TypeConstraint(body, new FlatTuple(var_composite), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Composite")));
@@ -123,16 +119,6 @@ public final class LockCQuerySpecification extends BaseGeneratedEMFQuerySpecific
       		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
       		new TypeConstraint(body, new FlatTuple(var_control, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Module", "provides")));
       		new Equality(body, var__virtual_2_, var_signal);
-      		// 	Signal.id(signal, id)
-      		new TypeConstraint(body, new FlatTuple(var_signal), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Signal")));
-      		PVariable var__virtual_3_ = body.getOrCreateVariableByName(".virtual{3}");
-      		new TypeConstraint(body, new FlatTuple(var_signal, var__virtual_3_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Signal", "id")));
-      		new Equality(body, var__virtual_3_, var_id);
-      		// 	Signal.frequency(signal, frequency)
-      		new TypeConstraint(body, new FlatTuple(var_signal), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Signal")));
-      		PVariable var__virtual_4_ = body.getOrCreateVariableByName(".virtual{4}");
-      		new TypeConstraint(body, new FlatTuple(var_signal, var__virtual_4_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Signal", "frequency")));
-      		new Equality(body, var__virtual_4_, var_frequency);
       		bodies.add(body);
       	}
       	// to silence compiler error

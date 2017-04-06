@@ -3,6 +3,8 @@ package org.mondo.collaboration.security.lock.eval.lock;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.patternlanguage.emf.specification.SpecificationBuilder;
 import org.eclipse.incquery.runtime.api.AdvancedIncQueryEngine;
+import org.eclipse.incquery.runtime.api.IPatternMatch;
+import org.eclipse.incquery.runtime.api.IncQueryMatcher;
 import org.eclipse.incquery.runtime.base.api.BaseIndexOptions;
 import org.eclipse.incquery.runtime.emf.EMFScope;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
@@ -10,6 +12,7 @@ import org.mondo.collaboration.security.lens.arbiter.LockArbiter;
 import org.mondo.collaboration.security.lens.arbiter.LockArbiter.LockMonitoringSession;
 import org.mondo.collaboration.security.lens.arbiter.SecurityArbiter;
 import org.mondo.collaboration.security.macl.xtext.mondoAccessControlLanguage.Policy;
+import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.Lock;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.PropertyBasedLockingModel;
 
 public class PropertyBasedLocker {
@@ -28,6 +31,12 @@ public class PropertyBasedLocker {
 		this.lockingModel = lockingModel;
 	}
 	
+	@SuppressWarnings("unchecked")
+	public boolean lockHasMatch(Lock lock) {
+		IPatternMatch bindingMatch = lockArbiter.getBindingForLock().get(lock);
+		IncQueryMatcher<IPatternMatch> lockMatcher = (IncQueryMatcher<IPatternMatch>) lockArbiter.getMatcherForLock().get(lock);
+		return lockMatcher.hasMatch(bindingMatch);
+	}
 	
 	public LockMonitoringSession addUser(String username) {
 		return lockArbiter.openSession(username);

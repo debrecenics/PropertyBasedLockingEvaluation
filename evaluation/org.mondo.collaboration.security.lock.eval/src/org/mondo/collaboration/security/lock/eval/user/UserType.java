@@ -39,8 +39,6 @@ public abstract class UserType {
 	protected IncQueryEngine engine;
 	protected Direction dir = Direction.FORWARD;
 	
-	protected long compensation = 0;
-	
 	public UserType(Resource model) {
 		this.model = model;
 	}

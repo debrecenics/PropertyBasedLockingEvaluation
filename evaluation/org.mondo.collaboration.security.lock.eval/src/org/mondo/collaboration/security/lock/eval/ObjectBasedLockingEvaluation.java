@@ -61,6 +61,6 @@ public class ObjectBasedLockingEvaluation extends Evaluation {
 			accepted += user.getAccepted();
 		}
 		
-		System.out.println(F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
+		System.out.println("O;" + F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
 	}
 }

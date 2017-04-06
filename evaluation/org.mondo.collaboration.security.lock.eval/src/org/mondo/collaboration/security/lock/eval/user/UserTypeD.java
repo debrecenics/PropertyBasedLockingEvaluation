@@ -11,6 +11,7 @@ import com.google.common.collect.Table;
 
 import wt.Control;
 import wt.Module;
+import wt.SgnlType;
 import wt.Signal;
 import wt.WtFactory;
 
@@ -36,6 +37,7 @@ public abstract class UserTypeD extends UserType {
 						@Override
 						public void process(LockCHelperMatch match) {
 							Signal signal = WtFactory.eINSTANCE.createSignal();
+							signal.setType(SgnlType.TEST);
 							match.getProvider().getProvides().add(signal);							
 							match.getConsumer().getConsumes().add(signal);	
 							newSignals.put(match.getProvider(), match.getConsumer(), signal);

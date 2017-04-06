@@ -20,5 +20,21 @@
   <eClassifiers xsi:type="ecore:EClass" name="Signal">
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="id" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EString"/>
     <eStructuralFeatures xsi:type="ecore:EAttribute" name="frequency" eType="ecore:EDataType http://www.eclipse.org/emf/2002/Ecore#//EInt"/>
+    <eStructuralFeatures xsi:type="ecore:EAttribute" name="type" eType="#//SgnlType"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="Cycle">
+    <eLiterals name="LOW"/>
+    <eLiterals name="MEDIUM" value="1"/>
+    <eLiterals name="HIGH" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="CtrlType">
+    <eLiterals name="Pump"/>
+    <eLiterals name="Fan" value="1"/>
+    <eLiterals name="Heater" value="2"/>
+  </eClassifiers>
+  <eClassifiers xsi:type="ecore:EEnum" name="SgnlType">
+    <eLiterals name="Output"/>
+    <eLiterals name="Error" value="1"/>
+    <eLiterals name="Test" value="2"/>
   </eClassifiers>
 </ecore:EPackage>

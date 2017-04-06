@@ -8,13 +8,11 @@ import org.mondo.collaboration.security.query.LockAMatcher;
 import org.mondo.collaboration.security.query.LockBMatcher;
 import org.mondo.collaboration.security.query.LockCHelperMatcher;
 import org.mondo.collaboration.security.query.LockCMatcher;
-import org.mondo.collaboration.security.query.ObjectobjectMatcher;
 import org.mondo.collaboration.security.query.util.LockAHelperQuerySpecification;
 import org.mondo.collaboration.security.query.util.LockAQuerySpecification;
 import org.mondo.collaboration.security.query.util.LockBQuerySpecification;
 import org.mondo.collaboration.security.query.util.LockCHelperQuerySpecification;
 import org.mondo.collaboration.security.query.util.LockCQuerySpecification;
-import org.mondo.collaboration.security.query.util.ObjectobjectQuerySpecification;
 
 /**
  * A pattern group formed of all patterns defined in lockQueries.eiq.
@@ -29,7 +27,6 @@ import org.mondo.collaboration.security.query.util.ObjectobjectQuerySpecificatio
  * <li>lockB</li>
  * <li>lockC</li>
  * <li>lockCHelper</li>
- * <li>objectobject</li>
  * </ul>
  * 
  * @see IPatternGroup
@@ -59,7 +56,6 @@ public final class LockQueries extends BaseGeneratedPatternGroup {
     querySpecifications.add(LockBQuerySpecification.instance());
     querySpecifications.add(LockCQuerySpecification.instance());
     querySpecifications.add(LockCHelperQuerySpecification.instance());
-    querySpecifications.add(ObjectobjectQuerySpecification.instance());
   }
   
   public LockAQuerySpecification getLockA() throws IncQueryException {
@@ -100,13 +96,5 @@ public final class LockQueries extends BaseGeneratedPatternGroup {
   
   public LockCHelperMatcher getLockCHelper(final IncQueryEngine engine) throws IncQueryException {
     return LockCHelperMatcher.on(engine);
-  }
-  
-  public ObjectobjectQuerySpecification getObjectobject() throws IncQueryException {
-    return ObjectobjectQuerySpecification.instance();
-  }
-  
-  public ObjectobjectMatcher getObjectobject(final IncQueryEngine engine) throws IncQueryException {
-    return ObjectobjectMatcher.on(engine);
   }
 }

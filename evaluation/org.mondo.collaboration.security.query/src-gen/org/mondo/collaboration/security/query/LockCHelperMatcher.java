@@ -34,6 +34,7 @@ import wt.Signal;
  * 	Composite.submodules(composite,provider);
  * 	Control.provides(provider, signal);
  * 	Module.consumes(consumer, signal);
+ * 	//Signal.type(signal, ::Output);
  * }
  * </pre></code>
  * 

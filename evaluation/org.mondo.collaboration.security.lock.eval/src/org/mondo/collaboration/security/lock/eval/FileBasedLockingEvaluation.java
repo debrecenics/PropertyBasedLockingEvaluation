@@ -60,6 +60,6 @@ public class FileBasedLockingEvaluation extends Evaluation {
 			accepted += user.getAccepted();
 		}
 		
-		System.out.println(F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
+		System.out.println("F;" + F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
 	}
 }

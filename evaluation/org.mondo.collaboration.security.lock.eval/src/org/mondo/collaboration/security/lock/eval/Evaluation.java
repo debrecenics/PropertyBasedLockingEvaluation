@@ -21,7 +21,7 @@ public class Evaluation {
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException, IncQueryException {
 		processArgs(args);
 		
-		System.out.println("Fragment;Deep;User;Accepted;Declined");
+		System.out.println("Type,Fragment;Deep;User;Accepted;Declined");
 		
 		if(mainArgs.containsKey("F") && mainArgs.containsKey("D") && mainArgs.containsKey("U")) {
 			for(int i = 0; i < R(); i++) {
@@ -32,14 +32,16 @@ public class Evaluation {
 				FileBasedLockingEvaluation.main(args);
 			}
 		} else {
-			int[] users = {1,3,6,9};
-			int[] fragments = {1,3,6,9,12,15,18};
-			int[] deeps = {1,3,6,9,12,15,18};
+			int[] users = {3,6,9};
+			int[] fragments = {3,6,9,12,15,18};
+			int[] deeps = {3,6,9,12,15,18};
 			int   repeat = 10;
+			
 			for(int u = 0; u < users.length; u++)
-				for(int f = 0; f < fragments.length; f++) 
-					for(int d = 0; d < deeps.length; d++) {
-						for(int i = 0; i < repeat; i++) {
+				for(int f = 0; f < fragments.length; f++)
+					if(f < u) continue;
+					else for(int d = 0; d < deeps.length; d++) {
+						 for(int i = 0; i < repeat; i++) {
 							if(fragments[f] < users[u]) break;
 								
 							mainArgs.put("F", String.valueOf(fragments[f]));

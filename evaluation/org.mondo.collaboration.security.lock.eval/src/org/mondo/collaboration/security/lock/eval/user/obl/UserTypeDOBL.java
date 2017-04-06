@@ -13,7 +13,6 @@ import org.mondo.collaboration.security.query.LockCHelperMatcher;
 import com.google.common.collect.Sets;
 
 import wt.Control;
-import wt.Module;
 
 public class UserTypeDOBL extends UserTypeD {
 
@@ -38,8 +37,8 @@ public class UserTypeDOBL extends UserTypeD {
 	private void lockBackward() {
 		for(Control provider : newSignals.rowKeySet())
 			identifiers.add(provider.getId());
-		for(Module consumer : newSignals.columnKeySet())
-			identifiers.add(consumer.getId());
+//		for(Module consumer : newSignals.columnKeySet())
+//			identifiers.add(consumer.getId());
 	}
 
 	private void lockForward() {

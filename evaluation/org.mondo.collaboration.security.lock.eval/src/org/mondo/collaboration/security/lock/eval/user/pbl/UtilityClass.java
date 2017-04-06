@@ -49,25 +49,27 @@ public class UtilityClass {
 		for (Role role : lockModel.getRoles()) {
 			if(role instanceof User) {
 				User user = (User) role;
-				if(user.getName().equals(name));
+				if(user.getName().equals(name))
 					return user;
 			}
 		}
 		return null;
 	}
 	
-	public static void acquireLock(PropertyBasedLocker locker, Lock lock) throws IncQueryException {
+	public static boolean acquireLock(PropertyBasedLocker locker, Lock lock) throws IncQueryException {
 		PropertyBasedLockingModel lockModel = locker.getLockingModel();
 		lockModel.getLocks().add(lock);
 		locker.reinitializeWith(lockModel);
-//		System.out.println(String.format("%s acquired locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
+		
+//		if(!locker.lockHasMatch(lock))
+//			releaseLock(locker, lock);
+		return true;
 	}
 
 	public static void releaseLock(PropertyBasedLocker locker, Lock lock) throws IncQueryException {
 		PropertyBasedLockingModel lockModel = locker.getLockingModel();
 		lockModel.getLocks().remove(lock);
 		locker.reinitializeWith(lockModel);
-		//		System.out.println(String.format("%s released locks for %s", lock.getOwner().getName(), lock.getPattern().getName()));
 	}
 	
 }

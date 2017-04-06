@@ -27,12 +27,11 @@ import wt.Signal;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern lockC(signal :Signal, vendor, frequency, id) {
+ * pattern lockC(signal :Signal, vendor) {
  * 	Composite.vendor(composite,vendor);
  * 	Composite.submodules(composite,control);
  * 	Control.provides(control, signal);
- * 	Signal.id(signal, id);
- * 	Signal.frequency(signal, frequency);
+ * 	//Signal.type(signal, ::Output);
  * }
  * </pre></code>
  * 
@@ -64,10 +63,6 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
   private final static int POSITION_SIGNAL = 0;
   
   private final static int POSITION_VENDOR = 1;
-  
-  private final static int POSITION_FREQUENCY = 2;
-  
-  private final static int POSITION_ID = 3;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(LockCMatcher.class);
   
@@ -106,13 +101,11 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return matches represented as a LockCMatch object.
    * 
    */
-  public Collection<LockCMatch> getAllMatches(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return rawGetAllMatches(new Object[]{pSignal, pVendor, pFrequency, pId});
+  public Collection<LockCMatch> getAllMatches(final Signal pSignal, final String pVendor) {
+    return rawGetAllMatches(new Object[]{pSignal, pVendor});
   }
   
   /**
@@ -120,13 +113,11 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return a match represented as a LockCMatch object, or null if no match is found.
    * 
    */
-  public LockCMatch getOneArbitraryMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return rawGetOneArbitraryMatch(new Object[]{pSignal, pVendor, pFrequency, pId});
+  public LockCMatch getOneArbitraryMatch(final Signal pSignal, final String pVendor) {
+    return rawGetOneArbitraryMatch(new Object[]{pSignal, pVendor});
   }
   
   /**
@@ -134,39 +125,33 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return rawHasMatch(new Object[]{pSignal, pVendor, pFrequency, pId});
+  public boolean hasMatch(final Signal pSignal, final String pVendor) {
+    return rawHasMatch(new Object[]{pSignal, pVendor});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return rawCountMatches(new Object[]{pSignal, pVendor, pFrequency, pId});
+  public int countMatches(final Signal pSignal, final String pVendor) {
+    return rawCountMatches(new Object[]{pSignal, pVendor});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId, final IMatchProcessor<? super LockCMatch> processor) {
-    rawForEachMatch(new Object[]{pSignal, pVendor, pFrequency, pId}, processor);
+  public void forEachMatch(final Signal pSignal, final String pVendor, final IMatchProcessor<? super LockCMatch> processor) {
+    rawForEachMatch(new Object[]{pSignal, pVendor}, processor);
   }
   
   /**
@@ -174,14 +159,12 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId, final IMatchProcessor<? super LockCMatch> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pSignal, pVendor, pFrequency, pId}, processor);
+  public boolean forOneArbitraryMatch(final Signal pSignal, final String pVendor, final IMatchProcessor<? super LockCMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pSignal, pVendor}, processor);
   }
   
   /**
@@ -190,13 +173,11 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public LockCMatch newMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return LockCMatch.newMatch(pSignal, pVendor, pFrequency, pId);
+  public LockCMatch newMatch(final Signal pSignal, final String pVendor) {
+    return LockCMatch.newMatch(pSignal, pVendor);
   }
   
   /**
@@ -233,12 +214,10 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Signal> getAllValuesOfsignal(final String pVendor, final Integer pFrequency, final String pId) {
+  public Set<Signal> getAllValuesOfsignal(final String pVendor) {
     return rawAccumulateAllValuesOfsignal(new Object[]{
     null, 
-    pVendor, 
-    pFrequency, 
-    pId
+    pVendor
     });
   }
   
@@ -276,97 +255,9 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfvendor(final Signal pSignal, final Integer pFrequency, final String pId) {
+  public Set<String> getAllValuesOfvendor(final Signal pSignal) {
     return rawAccumulateAllValuesOfvendor(new Object[]{
     pSignal, 
-    null, 
-    pFrequency, 
-    pId
-    });
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for frequency.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<Integer> rawAccumulateAllValuesOffrequency(final Object[] parameters) {
-    Set<Integer> results = new HashSet<Integer>();
-    rawAccumulateAllValues(POSITION_FREQUENCY, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for frequency.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Integer> getAllValuesOffrequency() {
-    return rawAccumulateAllValuesOffrequency(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for frequency.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Integer> getAllValuesOffrequency(final LockCMatch partialMatch) {
-    return rawAccumulateAllValuesOffrequency(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for frequency.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<Integer> getAllValuesOffrequency(final Signal pSignal, final String pVendor, final String pId) {
-    return rawAccumulateAllValuesOffrequency(new Object[]{
-    pSignal, 
-    pVendor, 
-    null, 
-    pId
-    });
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for id.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  protected Set<String> rawAccumulateAllValuesOfid(final Object[] parameters) {
-    Set<String> results = new HashSet<String>();
-    rawAccumulateAllValues(POSITION_ID, parameters, results);
-    return results;
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for id.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfid() {
-    return rawAccumulateAllValuesOfid(emptyArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for id.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfid(final LockCMatch partialMatch) {
-    return rawAccumulateAllValuesOfid(partialMatch.toArray());
-  }
-  
-  /**
-   * Retrieve the set of values that occur in matches for id.
-   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
-   * 
-   */
-  public Set<String> getAllValuesOfid(final Signal pSignal, final String pVendor, final Integer pFrequency) {
-    return rawAccumulateAllValuesOfid(new Object[]{
-    pSignal, 
-    pVendor, 
-    pFrequency, 
     null
     });
   }
@@ -374,7 +265,7 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
   @Override
   protected LockCMatch tupleToMatch(final Tuple t) {
     try {
-    	return LockCMatch.newMatch((wt.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_VENDOR), (java.lang.Integer) t.get(POSITION_FREQUENCY), (java.lang.String) t.get(POSITION_ID));
+    	return LockCMatch.newMatch((wt.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_VENDOR));
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in tuple not properly typed!",e);
     	return null;
@@ -384,7 +275,7 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
   @Override
   protected LockCMatch arrayToMatch(final Object[] match) {
     try {
-    	return LockCMatch.newMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_VENDOR], (java.lang.Integer) match[POSITION_FREQUENCY], (java.lang.String) match[POSITION_ID]);
+    	return LockCMatch.newMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_VENDOR]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;
@@ -394,7 +285,7 @@ public class LockCMatcher extends BaseMatcher<LockCMatch> {
   @Override
   protected LockCMatch arrayToMatchMutable(final Object[] match) {
     try {
-    	return LockCMatch.newMutableMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_VENDOR], (java.lang.Integer) match[POSITION_FREQUENCY], (java.lang.String) match[POSITION_ID]);
+    	return LockCMatch.newMutableMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_VENDOR]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;

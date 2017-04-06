@@ -27,25 +27,17 @@ public abstract class LockCMatch extends BasePatternMatch {
   
   private String fVendor;
   
-  private Integer fFrequency;
+  private static List<String> parameterNames = makeImmutableList("signal", "vendor");
   
-  private String fId;
-  
-  private static List<String> parameterNames = makeImmutableList("signal", "vendor", "frequency", "id");
-  
-  private LockCMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
+  private LockCMatch(final Signal pSignal, final String pVendor) {
     this.fSignal = pSignal;
     this.fVendor = pVendor;
-    this.fFrequency = pFrequency;
-    this.fId = pId;
   }
   
   @Override
   public Object get(final String parameterName) {
     if ("signal".equals(parameterName)) return this.fSignal;
     if ("vendor".equals(parameterName)) return this.fVendor;
-    if ("frequency".equals(parameterName)) return this.fFrequency;
-    if ("id".equals(parameterName)) return this.fId;
     return null;
   }
   
@@ -57,14 +49,6 @@ public abstract class LockCMatch extends BasePatternMatch {
     return this.fVendor;
   }
   
-  public Integer getFrequency() {
-    return this.fFrequency;
-  }
-  
-  public String getId() {
-    return this.fId;
-  }
-  
   @Override
   public boolean set(final String parameterName, final Object newValue) {
     if (!isMutable()) throw new java.lang.UnsupportedOperationException();
@@ -74,14 +58,6 @@ public abstract class LockCMatch extends BasePatternMatch {
     }
     if ("vendor".equals(parameterName) ) {
     	this.fVendor = (java.lang.String) newValue;
-    	return true;
-    }
-    if ("frequency".equals(parameterName) ) {
-    	this.fFrequency = (java.lang.Integer) newValue;
-    	return true;
-    }
-    if ("id".equals(parameterName) ) {
-    	this.fId = (java.lang.String) newValue;
     	return true;
     }
     return false;
@@ -97,16 +73,6 @@ public abstract class LockCMatch extends BasePatternMatch {
     this.fVendor = pVendor;
   }
   
-  public void setFrequency(final Integer pFrequency) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fFrequency = pFrequency;
-  }
-  
-  public void setId(final String pId) {
-    if (!isMutable()) throw new java.lang.UnsupportedOperationException();
-    this.fId = pId;
-  }
-  
   @Override
   public String patternName() {
     return "org.mondo.collaboration.security.query.lockC";
@@ -119,12 +85,12 @@ public abstract class LockCMatch extends BasePatternMatch {
   
   @Override
   public Object[] toArray() {
-    return new Object[]{fSignal, fVendor, fFrequency, fId};
+    return new Object[]{fSignal, fVendor};
   }
   
   @Override
   public LockCMatch toImmutable() {
-    return isMutable() ? newMatch(fSignal, fVendor, fFrequency, fId) : this;
+    return isMutable() ? newMatch(fSignal, fVendor) : this;
   }
   
   @Override
@@ -132,11 +98,7 @@ public abstract class LockCMatch extends BasePatternMatch {
     StringBuilder result = new StringBuilder();
     result.append("\"signal\"=" + prettyPrintValue(fSignal) + ", ");
     
-    result.append("\"vendor\"=" + prettyPrintValue(fVendor) + ", ");
-    
-    result.append("\"frequency\"=" + prettyPrintValue(fFrequency) + ", ");
-    
-    result.append("\"id\"=" + prettyPrintValue(fId)
+    result.append("\"vendor\"=" + prettyPrintValue(fVendor)
     );
     return result.toString();
   }
@@ -147,8 +109,6 @@ public abstract class LockCMatch extends BasePatternMatch {
     int result = 1;
     result = prime * result + ((fSignal == null) ? 0 : fSignal.hashCode());
     result = prime * result + ((fVendor == null) ? 0 : fVendor.hashCode());
-    result = prime * result + ((fFrequency == null) ? 0 : fFrequency.hashCode());
-    result = prime * result + ((fId == null) ? 0 : fId.hashCode());
     return result;
   }
   
@@ -173,10 +133,6 @@ public abstract class LockCMatch extends BasePatternMatch {
     else if (!fSignal.equals(other.fSignal)) return false;
     if (fVendor == null) {if (other.fVendor != null) return false;}
     else if (!fVendor.equals(other.fVendor)) return false;
-    if (fFrequency == null) {if (other.fFrequency != null) return false;}
-    else if (!fFrequency.equals(other.fFrequency)) return false;
-    if (fId == null) {if (other.fId != null) return false;}
-    else if (!fId.equals(other.fId)) return false;
     return true;
   }
   
@@ -198,7 +154,7 @@ public abstract class LockCMatch extends BasePatternMatch {
    * 
    */
   public static LockCMatch newEmptyMatch() {
-    return new Mutable(null, null, null, null);
+    return new Mutable(null, null);
   }
   
   /**
@@ -207,13 +163,11 @@ public abstract class LockCMatch extends BasePatternMatch {
    * 
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return the new, mutable (partial) match object.
    * 
    */
-  public static LockCMatch newMutableMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return new Mutable(pSignal, pVendor, pFrequency, pId);
+  public static LockCMatch newMutableMatch(final Signal pSignal, final String pVendor) {
+    return new Mutable(pSignal, pVendor);
   }
   
   /**
@@ -222,18 +176,16 @@ public abstract class LockCMatch extends BasePatternMatch {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
-   * @param pFrequency the fixed value of pattern parameter frequency, or null if not bound.
-   * @param pId the fixed value of pattern parameter id, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public static LockCMatch newMatch(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-    return new Immutable(pSignal, pVendor, pFrequency, pId);
+  public static LockCMatch newMatch(final Signal pSignal, final String pVendor) {
+    return new Immutable(pSignal, pVendor);
   }
   
   private static final class Mutable extends LockCMatch {
-    Mutable(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-      super(pSignal, pVendor, pFrequency, pId);
+    Mutable(final Signal pSignal, final String pVendor) {
+      super(pSignal, pVendor);
     }
     
     @Override
@@ -243,8 +195,8 @@ public abstract class LockCMatch extends BasePatternMatch {
   }
   
   private static final class Immutable extends LockCMatch {
-    Immutable(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId) {
-      super(pSignal, pVendor, pFrequency, pId);
+    Immutable(final Signal pSignal, final String pVendor) {
+      super(pSignal, pVendor);
     }
     
     @Override

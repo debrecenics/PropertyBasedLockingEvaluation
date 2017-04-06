@@ -31,6 +31,7 @@ import wt.Signal;
  * 	Control.cycle(ctrl, cycle);
  * 	Control.provides(ctrl, signal);
  * 	Signal.frequency(signal, value);
+ * 	//Signal.type(signal, ::Output);
  * }
  * </pre></code>
  * 

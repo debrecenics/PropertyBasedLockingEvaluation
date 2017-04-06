@@ -31,11 +31,7 @@ public class UserTypeDPBL extends UserTypeD {
 	@Override
 	protected boolean doAcquireLock() {
 		try {
-			long start = System.currentTimeMillis();
-			UtilityClass.acquireLock(locker, lock);
-			long end = System.currentTimeMillis();
-			compensation = end-start;
-			return true;
+			return UtilityClass.acquireLock(locker, lock);
 		} catch (IncQueryException e) {
 			e.printStackTrace();
 		}
@@ -44,16 +40,11 @@ public class UserTypeDPBL extends UserTypeD {
 
 	@Override
 	protected boolean doOperations() {
-		long start = System.currentTimeMillis();
 		LockMonitoringSession session = locker.addUser(getName());
 		super.doOperations();
 		if(session.getAnyLockViolation() != null) {
-			long end = System.currentTimeMillis();
-			compensation += end-start;
 			return false;
 		} else {
-			long end = System.currentTimeMillis();
-			compensation += end-start;
 			return true;
 		}
 		

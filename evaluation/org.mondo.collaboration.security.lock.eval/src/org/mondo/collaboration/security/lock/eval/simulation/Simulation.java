@@ -29,7 +29,12 @@ public class Simulation {
 
 			@Override
 			public int compare(AbstractWrapper o1, AbstractWrapper o2) {
-				return o1.getTime() < o2.getTime() ? -1 : 1;
+				if (o1.getTime() < o2.getTime())
+					return -1;
+				if (o1.getTime() > o2.getTime())
+					return 1;
+				return 0;
+				
 			}
 		});
 	}

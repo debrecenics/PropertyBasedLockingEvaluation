@@ -16,14 +16,12 @@ public abstract class LockCProcessor implements IMatchProcessor<LockCMatch> {
    * Defines the action that is to be executed on each match.
    * @param pSignal the value of pattern parameter signal in the currently processed match
    * @param pVendor the value of pattern parameter vendor in the currently processed match
-   * @param pFrequency the value of pattern parameter frequency in the currently processed match
-   * @param pId the value of pattern parameter id in the currently processed match
    * 
    */
-  public abstract void process(final Signal pSignal, final String pVendor, final Integer pFrequency, final String pId);
+  public abstract void process(final Signal pSignal, final String pVendor);
   
   @Override
   public void process(final LockCMatch match) {
-    process(match.getSignal(), match.getVendor(), match.getFrequency(), match.getId());
+    process(match.getSignal(), match.getVendor());
   }
 }
