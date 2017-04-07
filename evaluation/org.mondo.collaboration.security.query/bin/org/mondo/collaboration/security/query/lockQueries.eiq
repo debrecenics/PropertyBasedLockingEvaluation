@@ -3,38 +3,37 @@ package org.mondo.collaboration.security.query
 import "http://wt/access-control"
 import "http://www.eclipse.org/emf/2002/Ecore"
 
-pattern lockA(signal :Signal, cycle, value) {
-	Control.cycle(ctrl, cycle);
-	Control.provides(ctrl, signal);
-	Signal.frequency(signal, value);
-	//Signal.type(signal, ::Output);
-}
-
-pattern lockAHelper(signal :Signal, cycle, value, ctrl :Control) {
-	Control.cycle(ctrl, cycle);
-	Control.provides(ctrl, signal);
-	Signal.frequency(signal, value);
-	//Signal.type(signal, ::Output);
-}
-
-pattern lockB(signal :Signal, type, module :Module) {
+pattern lockOp1(signal :Signal, type) {
 	Control.type(ctrl, type);
 	Control.provides(ctrl, signal);
-	Module.consumes(module, signal);
-	//Signal.type(signal, ::Output);
 }
 
-pattern lockC(signal :Signal, vendor) {
+pattern lockOp2(vendor, control : Control) {
 	Composite.vendor(composite,vendor);
-	Composite.submodules(composite,control);
-	Control.provides(control, signal);
-	//Signal.type(signal, ::Output);
+	neg find containedBy(_,root);
+	Composite.submodules(root,composite);
+	find containedBy+(composite,control);
 }
 
-pattern lockCHelper(signal :Signal, vendor, provider : Control, consumer : Module) {
-	Composite.vendor(composite,vendor);
-	Composite.submodules(composite,provider);
-	Control.provides(provider, signal);
-	Module.consumes(consumer, signal);
-	//Signal.type(signal, ::Output);
+pattern lockOp3(signal :Signal, cycle, value) {
+	Control.cycle(ctrl, cycle);
+	Control.provides(ctrl, signal);
+	Signal.frequency(signal, value);
+}
+
+pattern lockOp1Helper(signal :Signal, ctrl :Control, type) {
+	Control.type(ctrl, type);
+	Control.provides(ctrl, signal);
+}
+
+pattern lockOp3Helper(signal :Signal, cycle, value, ctrl :Control) {
+	Control.cycle(ctrl, cycle);
+	Control.provides(ctrl, signal);
+	Signal.frequency(signal, value);
+}
+
+pattern containedBy(parent,child) {	
+	Composite.submodules(parent,child);
+} or {
+	Module.provides(parent,child);	
 }

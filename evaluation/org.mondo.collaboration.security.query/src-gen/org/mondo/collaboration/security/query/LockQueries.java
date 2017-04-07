@@ -3,16 +3,18 @@ package org.mondo.collaboration.security.query;
 import org.eclipse.incquery.runtime.api.IncQueryEngine;
 import org.eclipse.incquery.runtime.api.impl.BaseGeneratedPatternGroup;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.mondo.collaboration.security.query.LockAHelperMatcher;
-import org.mondo.collaboration.security.query.LockAMatcher;
-import org.mondo.collaboration.security.query.LockBMatcher;
-import org.mondo.collaboration.security.query.LockCHelperMatcher;
-import org.mondo.collaboration.security.query.LockCMatcher;
-import org.mondo.collaboration.security.query.util.LockAHelperQuerySpecification;
-import org.mondo.collaboration.security.query.util.LockAQuerySpecification;
-import org.mondo.collaboration.security.query.util.LockBQuerySpecification;
-import org.mondo.collaboration.security.query.util.LockCHelperQuerySpecification;
-import org.mondo.collaboration.security.query.util.LockCQuerySpecification;
+import org.mondo.collaboration.security.query.ContainedByMatcher;
+import org.mondo.collaboration.security.query.LockOp1HelperMatcher;
+import org.mondo.collaboration.security.query.LockOp1Matcher;
+import org.mondo.collaboration.security.query.LockOp2Matcher;
+import org.mondo.collaboration.security.query.LockOp3HelperMatcher;
+import org.mondo.collaboration.security.query.LockOp3Matcher;
+import org.mondo.collaboration.security.query.util.ContainedByQuerySpecification;
+import org.mondo.collaboration.security.query.util.LockOp1HelperQuerySpecification;
+import org.mondo.collaboration.security.query.util.LockOp1QuerySpecification;
+import org.mondo.collaboration.security.query.util.LockOp2QuerySpecification;
+import org.mondo.collaboration.security.query.util.LockOp3HelperQuerySpecification;
+import org.mondo.collaboration.security.query.util.LockOp3QuerySpecification;
 
 /**
  * A pattern group formed of all patterns defined in lockQueries.eiq.
@@ -22,11 +24,12 @@ import org.mondo.collaboration.security.query.util.LockCQuerySpecification;
  * in order to achieve better performance than one-by-one on-demand matcher initialization.
  * 
  * <p> From package org.mondo.collaboration.security.query, the group contains the definition of the following patterns: <ul>
- * <li>lockA</li>
- * <li>lockAHelper</li>
- * <li>lockB</li>
- * <li>lockC</li>
- * <li>lockCHelper</li>
+ * <li>lockOp1</li>
+ * <li>lockOp2</li>
+ * <li>lockOp3</li>
+ * <li>lockOp1Helper</li>
+ * <li>lockOp3Helper</li>
+ * <li>containedBy</li>
  * </ul>
  * 
  * @see IPatternGroup
@@ -51,50 +54,59 @@ public final class LockQueries extends BaseGeneratedPatternGroup {
   private static LockQueries INSTANCE;
   
   private LockQueries() throws IncQueryException {
-    querySpecifications.add(LockAQuerySpecification.instance());
-    querySpecifications.add(LockAHelperQuerySpecification.instance());
-    querySpecifications.add(LockBQuerySpecification.instance());
-    querySpecifications.add(LockCQuerySpecification.instance());
-    querySpecifications.add(LockCHelperQuerySpecification.instance());
+    querySpecifications.add(LockOp1QuerySpecification.instance());
+    querySpecifications.add(LockOp2QuerySpecification.instance());
+    querySpecifications.add(LockOp3QuerySpecification.instance());
+    querySpecifications.add(LockOp1HelperQuerySpecification.instance());
+    querySpecifications.add(LockOp3HelperQuerySpecification.instance());
+    querySpecifications.add(ContainedByQuerySpecification.instance());
   }
   
-  public LockAQuerySpecification getLockA() throws IncQueryException {
-    return LockAQuerySpecification.instance();
+  public LockOp1QuerySpecification getLockOp1() throws IncQueryException {
+    return LockOp1QuerySpecification.instance();
   }
   
-  public LockAMatcher getLockA(final IncQueryEngine engine) throws IncQueryException {
-    return LockAMatcher.on(engine);
+  public LockOp1Matcher getLockOp1(final IncQueryEngine engine) throws IncQueryException {
+    return LockOp1Matcher.on(engine);
   }
   
-  public LockAHelperQuerySpecification getLockAHelper() throws IncQueryException {
-    return LockAHelperQuerySpecification.instance();
+  public LockOp2QuerySpecification getLockOp2() throws IncQueryException {
+    return LockOp2QuerySpecification.instance();
   }
   
-  public LockAHelperMatcher getLockAHelper(final IncQueryEngine engine) throws IncQueryException {
-    return LockAHelperMatcher.on(engine);
+  public LockOp2Matcher getLockOp2(final IncQueryEngine engine) throws IncQueryException {
+    return LockOp2Matcher.on(engine);
   }
   
-  public LockBQuerySpecification getLockB() throws IncQueryException {
-    return LockBQuerySpecification.instance();
+  public LockOp3QuerySpecification getLockOp3() throws IncQueryException {
+    return LockOp3QuerySpecification.instance();
   }
   
-  public LockBMatcher getLockB(final IncQueryEngine engine) throws IncQueryException {
-    return LockBMatcher.on(engine);
+  public LockOp3Matcher getLockOp3(final IncQueryEngine engine) throws IncQueryException {
+    return LockOp3Matcher.on(engine);
   }
   
-  public LockCQuerySpecification getLockC() throws IncQueryException {
-    return LockCQuerySpecification.instance();
+  public LockOp1HelperQuerySpecification getLockOp1Helper() throws IncQueryException {
+    return LockOp1HelperQuerySpecification.instance();
   }
   
-  public LockCMatcher getLockC(final IncQueryEngine engine) throws IncQueryException {
-    return LockCMatcher.on(engine);
+  public LockOp1HelperMatcher getLockOp1Helper(final IncQueryEngine engine) throws IncQueryException {
+    return LockOp1HelperMatcher.on(engine);
   }
   
-  public LockCHelperQuerySpecification getLockCHelper() throws IncQueryException {
-    return LockCHelperQuerySpecification.instance();
+  public LockOp3HelperQuerySpecification getLockOp3Helper() throws IncQueryException {
+    return LockOp3HelperQuerySpecification.instance();
   }
   
-  public LockCHelperMatcher getLockCHelper(final IncQueryEngine engine) throws IncQueryException {
-    return LockCHelperMatcher.on(engine);
+  public LockOp3HelperMatcher getLockOp3Helper(final IncQueryEngine engine) throws IncQueryException {
+    return LockOp3HelperMatcher.on(engine);
+  }
+  
+  public ContainedByQuerySpecification getContainedBy() throws IncQueryException {
+    return ContainedByQuerySpecification.instance();
+  }
+  
+  public ContainedByMatcher getContainedBy(final IncQueryEngine engine) throws IncQueryException {
+    return ContainedByMatcher.on(engine);
   }
 }

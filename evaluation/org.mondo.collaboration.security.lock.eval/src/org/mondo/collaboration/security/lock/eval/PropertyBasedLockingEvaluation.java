@@ -13,9 +13,9 @@ import org.eclipse.incquery.patternlanguage.emf.EMFPatternLanguageStandaloneSetu
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.lock.PropertyBasedLocker;
 import org.mondo.collaboration.security.lock.eval.user.UserType;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeBPBL;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeDPBL;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeMPBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserType1PBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserType2PBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserType3PBL;
 import org.mondo.collaboration.security.macl.xtext.AccessControlLanguageStandaloneSetup;
 import org.mondo.collaboration.security.mpbl.xtext.MondoPropertyBasedLockingStandaloneSetup;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.PropertyBasedLockingModel;
@@ -56,20 +56,20 @@ public class PropertyBasedLockingEvaluation extends Evaluation {
 		
 		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeMPBL(locker, resource, "cycle."+bind, "userM"+i).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType3PBL(locker, resource, "cycle."+bind, "userM"+i).init();
 			user.setName("userM"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeBPBL(locker, resource, "type."+bind, "userB"+i).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType1PBL(locker, resource, "type."+bind, "userB"+i).init();
 			user.setName("userB"+i);
 			users.add(user);
-			}
+		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeDPBL(locker, resource, "vendor."+bind, "userD"+i).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType2PBL(locker, resource, "vendor."+bind, "userD"+i).init();
 			user.setName("userD"+i);
 			users.add(user);
 		}
@@ -83,6 +83,6 @@ public class PropertyBasedLockingEvaluation extends Evaluation {
 			accepted += user.getAccepted();
 		}
 		
-		System.out.println("P;" + F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
+		System.out.println("P," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
 	}
 }

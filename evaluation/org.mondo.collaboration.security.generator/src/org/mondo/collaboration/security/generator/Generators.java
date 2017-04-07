@@ -61,9 +61,9 @@ public class Generators {
 	}
 	
 	public static void generateModels() throws Exception {
-		int[] users = {1,3,6,9};
-		int[] fragments = {1,3,6,9,12,15,18};
-		int[] deeps = {1,3,6,9,12,15,18};
+		int[] users = {3,6,9,12};
+		int[] fragments = {3,6,9,12,15,18};
+		int[] deeps = {3,6,9,12,15,18};
 		
 		for(int u = 0; u < users.length; u++)
 			for(int f = 0; f < fragments.length; f++) 

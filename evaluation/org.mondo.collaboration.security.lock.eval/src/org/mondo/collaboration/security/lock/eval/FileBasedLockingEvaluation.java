@@ -9,9 +9,9 @@ import org.eclipse.emf.ecore.xmi.impl.XMIResourceFactoryImpl;
 import org.eclipse.emf.transaction.TransactionalEditingDomain;
 import org.mondo.collaboration.security.lock.eval.lock.FileBasedLocker;
 import org.mondo.collaboration.security.lock.eval.user.UserType;
-import org.mondo.collaboration.security.lock.eval.user.fbl.UserTypeBFBL;
-import org.mondo.collaboration.security.lock.eval.user.fbl.UserTypeDFBL;
-import org.mondo.collaboration.security.lock.eval.user.fbl.UserTypeMFBL;
+import org.mondo.collaboration.security.lock.eval.user.fbl.UserType1FBL;
+import org.mondo.collaboration.security.lock.eval.user.fbl.UserType2FBL;
+import org.mondo.collaboration.security.lock.eval.user.fbl.UserType3FBL;
 
 import com.google.common.collect.Lists;
 
@@ -33,20 +33,20 @@ public class FileBasedLockingEvaluation extends Evaluation {
 		
 		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeMFBL(resource, "cycle."+bind, locker).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType3FBL(resource, "cycle."+bind, locker).init();
 			user.setName("userM"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeBFBL(resource, "type."+bind, locker).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType1FBL(resource, "type."+bind, locker).init();
 			user.setName("userB"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = i%U() == 0 ? U() : i%U();
-			UserType user = new UserTypeDFBL(resource, "vendor."+bind, locker).init();
+			int bind = getUniqueBinding(i);
+			UserType user = new UserType2FBL(resource, "vendor."+bind, locker).init();
 			user.setName("userD"+i);
 			users.add(user);
 		}
@@ -60,6 +60,6 @@ public class FileBasedLockingEvaluation extends Evaluation {
 			accepted += user.getAccepted();
 		}
 		
-		System.out.println("F;" + F() + ";" + D() + ";" + U() + ";" + accepted + ";" + declined);
+		System.out.println("F," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
 	}
 }
