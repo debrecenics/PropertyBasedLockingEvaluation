@@ -9,22 +9,26 @@ import com.google.common.collect.Sets;
 
 public class FileBasedLocker {
 
-	private final Map<String, String> lock = Maps.newHashMap();
+	private final Map<Object, String> lock = Maps.newHashMap();
 
-	public boolean acquireLock(Set<String> identifiers, String user) {
-		HashSet<String> intersection = Sets.newHashSet(identifiers);
+	public boolean acquireLock(Set<Object> identifiers, String user) {
+		HashSet<Object> intersection = Sets.newHashSet(identifiers);
 		if (intersection.removeAll(lock.keySet())) {
 			return false;
 		}
 
-		for (String id : identifiers) {
+		for (Object id : identifiers) {
 			lock.put(id, user);
 		}
+		if(identifiers.isEmpty()) {
+			return false;	
+		}
 		return true;
+		
 	}
 
-	public void releaseLock(Set<String> identifiers, String user) {
-		for (String id : identifiers) {
+	public void releaseLock(Set<Object> identifiers, String user) {
+		for (Object id : identifiers) {
 			if (lock.get(id).equals(user)) {
 				lock.remove(id);
 			}

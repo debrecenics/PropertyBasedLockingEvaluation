@@ -27,6 +27,8 @@ import wt.WtPackage;
 
 public class PropertyBasedLockingEvaluation extends Evaluation {
 	
+	static double ratio;
+	
 	public static void main(String[] args) throws IncQueryException, InvocationTargetException, InterruptedException {
 		
 		EMFPatternLanguageStandaloneSetup.doSetup();
@@ -56,20 +58,20 @@ public class PropertyBasedLockingEvaluation extends Evaluation {
 		
 		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType3PBL(locker, resource, "cycle."+bind, "userM"+i).init();
+			char bind = getUniqueBinding(i,"c");
+			UserType user = new UserType3PBL(locker, resource, "cycle"+bind, "userM"+i).init();
 			user.setName("userM"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType1PBL(locker, resource, "type."+bind, "userB"+i).init();
+			char bind = getUniqueBinding(i,"t");
+			UserType user = new UserType1PBL(locker, resource, "type"+bind, "userB"+i).init();
 			user.setName("userB"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType2PBL(locker, resource, "vendor."+bind, "userD"+i).init();
+			char bind = getUniqueBinding(i,"v");
+			UserType user = new UserType2PBL(locker, resource, "vendor"+bind, "userD"+i).init();
 			user.setName("userD"+i);
 			users.add(user);
 		}
@@ -82,7 +84,7 @@ public class PropertyBasedLockingEvaluation extends Evaluation {
 			declined += user.getDeclined();
 			accepted += user.getAccepted();
 		}
-		
-		System.out.println("P," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
+		ratio = (double) accepted / (double)(accepted + declined);
+//		System.out.println("P," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
 	}
 }

@@ -14,7 +14,7 @@ import com.google.common.collect.Sets;
 public class UserType1OBL extends UserType1 {
 
 	private ObjectBasedLocker locker;
-	private Set<String> identifiers = Sets.newHashSet();
+	private Set<Object> identifiers = Sets.newHashSet();
 
 	public UserType1OBL(Resource model, String type, ObjectBasedLocker locker) {
 		super(model, type);
@@ -30,8 +30,8 @@ public class UserType1OBL extends UserType1 {
 			filter.setType(type);
 			
 			for (LockOp1HelperMatch match : matcher.getAllMatches(filter)) {
-				identifiers.add(match.getSignal().getId());
-				identifiers.add(match.getCtrl().getId());
+				identifiers.add(match.getSignal());
+				identifiers.add(match.getCtrl());
 			}
 			
 		} catch (IncQueryException e) {

@@ -20,12 +20,12 @@ public class Configuration {
 	
 	public static int Days = 10;
 	
-	public static int WaitMeanB =  16; //h
-	public static int WaitMeanD =  8; //h
-	public static int WaitMeanM =  3; //h
+	public static int WaitMeanB =  24; //h
+	public static int WaitMeanD =  12; //h
+	public static int WaitMeanM =  4; //h
 	
-	public static int ExecMeanB =  8; //h
-	public static int ExecMeanD =  4; //h
+	public static int ExecMeanB =  3; //h
+	public static int ExecMeanD =  2; //h
 	public static int ExecMeanM =  1; //h
 	
 	public static void initiateTimings(int size) {

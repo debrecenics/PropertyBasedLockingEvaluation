@@ -20,6 +20,8 @@ import wt.WtPackage;
 
 public class FileBasedLockingEvaluation extends Evaluation {
 
+	static double ratio;
+
 	public static void main(String[] args) throws InterruptedException {
 		
 		FileBasedLocker locker = new FileBasedLocker();
@@ -33,20 +35,20 @@ public class FileBasedLockingEvaluation extends Evaluation {
 		
 		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType3FBL(resource, "cycle."+bind, locker).init();
+			char bind = getUniqueBinding(i,"c");
+			UserType user = new UserType3FBL(resource, "cycle"+bind, locker).init();
 			user.setName("userM"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType1FBL(resource, "type."+bind, locker).init();
+			char bind = getUniqueBinding(i,"t");
+			UserType user = new UserType1FBL(resource, "type"+bind, locker).init();
 			user.setName("userB"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
-			int bind = getUniqueBinding(i);
-			UserType user = new UserType2FBL(resource, "vendor."+bind, locker).init();
+			char bind = getUniqueBinding(i,"v");
+			UserType user = new UserType2FBL(resource, "vendor"+bind, locker).init();
 			user.setName("userD"+i);
 			users.add(user);
 		}
@@ -59,7 +61,8 @@ public class FileBasedLockingEvaluation extends Evaluation {
 			declined += user.getDeclined();
 			accepted += user.getAccepted();
 		}
-		
-		System.out.println("F," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
+
+		ratio = (double) accepted / (double)(accepted + declined);
+//		System.out.println("F," + F() + "," + D() + "," + U() + "," + accepted + "," + declined);
 	}
 }

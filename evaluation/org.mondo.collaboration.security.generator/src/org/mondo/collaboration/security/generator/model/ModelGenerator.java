@@ -1,6 +1,7 @@
 package org.mondo.collaboration.security.generator.model;
 
 import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -13,73 +14,87 @@ import wt.WtFactory;
 
 public class ModelGenerator {
 
-	static List<Integer> cycle = Lists.newArrayList();
-//	static List<Integer> vendor = Lists.newArrayList();
-	static List<Integer> type = Lists.newArrayList();
+	public static final char[] ABC = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 	
-	private static int getNext(List<Integer> list, int vendors) {
-		if(list.isEmpty()) {
-			for(int i = 1; i <= vendors; list.add(new Integer(i)), i++);
-			Collections.shuffle(list);
-		}
-		return list.get(0);
-	}
-	
-	
-	public static Composite generate(int size, int vendors, int deep) {
+	public static Composite generate(int fragmentSize, int userSize, int deepSize) {
 		Composite root = WtFactory.eINSTANCE.createComposite();
-//		root.setId("root");
 		root.setVendor("vendor.root");
-		for (int submodule = 1; submodule <= size; submodule++) {
-			createSubmodule(root, submodule, vendors, deep, 1);
+		for (int currentFragment = 0; currentFragment < fragmentSize; currentFragment++) {
+			createfragment(root, currentFragment, userSize, deepSize, 0);
 		}
 		return root;
 	}
 
-	private static void createSubmodule(Composite root, int submodule, int vendors, int maxDeep, int currentDeep) {
+	private static void createfragment(Composite root, int currentFragment, int userSize, int deepSize, int currentDeep) {
+		Iterator<Character> vendorIterator = vendorMap.get(currentFragment).get(currentDeep).iterator();
+		Iterator<Character> cycleIterator = cycleMap.get(currentFragment).get(currentDeep).iterator();
+		Iterator<Character> typeIterator = typeMap.get(currentFragment).get(currentDeep).iterator();
+		
 		Composite composite = WtFactory.eINSTANCE.createComposite();
-//		composite.setId(String.format("submodule.%d.%d", submodule, 1));
-		composite.setVendor(String.format("vendor.%d", submodule%vendors+1));
+		composite.setVendor(String.format("vendor%c", vendorIterator.next()));
 
-		createContainer(submodule, vendors, composite, 2, 1);
-		createContainer(submodule, vendors, composite, 3, 2);
-		createContainer(submodule, vendors, composite, 4, 1);
+		createContainer(currentFragment, userSize, composite, 1, vendorIterator, cycleIterator, typeIterator);
+		createContainer(currentFragment, userSize, composite, 2, vendorIterator, cycleIterator, typeIterator);
+		createContainer(currentFragment, userSize, composite, 1, vendorIterator, cycleIterator, typeIterator);
 		
 		root.getSubmodules().add(composite);
 		
-		if(maxDeep != currentDeep)
-			createSubmodule(composite, submodule, vendors, maxDeep, currentDeep+1);
+		if(deepSize > currentDeep+1)
+			createfragment(composite, currentFragment, userSize, deepSize, currentDeep+1);
 	}
 
-	private static void createContainer(int submodule, int vendors, Composite composite, int id, int ctrls) {
+	private static void createContainer(int currentFragment, int userSize, Composite composite, int noControls, Iterator<Character> vendorIterator, Iterator<Character> cycleIterator, Iterator<Character> typeIterator ) {
 		Composite container = WtFactory.eINSTANCE.createComposite();
-//		container.setId(String.format("container.%d.%d", submodule, id));
-		container.setVendor(String.format("vendor.%d", submodule%vendors+1));
-		
-		for(int i = 0; i < ctrls; i++)	createControlUnits(container, submodule, i, vendors);
-		
+		container.setVendor(String.format("vendor%c", vendorIterator.next()));
+		for(int i = 0; i < noControls; i++)	createControlUnits(container, cycleIterator, typeIterator);
 		composite.getSubmodules().add(container);
 	}
 
-	private static void createControlUnits(Composite container, int submodule, int i, int vendors) {
+	private static void createControlUnits(Composite container, Iterator<Character> cycleIterator, Iterator<Character> typeIterator) {
 		Control control = WtFactory.eINSTANCE.createControl();
-//		control.setId(String.format("control.%d.%d.%d", submodule, id, i));
-		control.setCycle(String.format("cycle.%d", getNext(cycle,vendors)));
-		cycle.remove(0);
-		control.setType(String.format("type.%d", getNext(type,vendors)));
-		type.remove(0);
-		
-		createSignals(container, control, submodule, i);
-		
+		control.setCycle(String.format("cycle%c", cycleIterator.next()));
+		control.setType(String.format("type%c", typeIterator.next()));
+		createSignals(container, control);
 		container.getSubmodules().add(control);			
 	}
 
-	private static void createSignals(Composite container, Control control, int submodule, int i) {
+	private static void createSignals(Composite container, Control control) {
 		Signal signal = WtFactory.eINSTANCE.createSignal();
-//		signal.setId(String.format("signal.%d.%d.%d", submodule, id, i));
 		signal.setFrequency(ThreadLocalRandom.current().nextInt(1, 11));
 		
 		control.getProvides().add(signal);
 		container.getConsumes().add(signal);		
+	}
+    //	   Fragment  Deep  Structure
+	static List<     List< List<Character>>>  cycleMap = Lists.newArrayList();
+	static List<     List< List<Character>>>  typeMap = Lists.newArrayList();
+	static List<     List< List<Character>>>  vendorMap = Lists.newArrayList();
+	
+	public static void preGenerateAttributes(int maxD, int maxF, int maxU) {
+		cycleMap.clear(); typeMap.clear();
+		cycleMap = raffleValues(maxD, maxF, maxU);
+		typeMap = raffleValues(maxD, maxF, maxU);
+		vendorMap = raffleValues(maxD, maxF, maxU);
+	}
+
+
+	private static List<List<List<Character>>> raffleValues(int maxD, int maxF, int maxU) {
+		List<List<List<Character>>> fragmentList = Lists.newArrayList();
+		for(int fragment = 0; fragment < maxF; fragment++) {
+			List<List<Character>> deepList = Lists.newArrayList();
+			for(int deep = 0; deep < maxD; deep++) {
+				List<Character> list = Lists.newArrayList();
+				for(int u = 1; u <= maxU; list.add(new Character(ABC[u])), u++);
+				Collections.shuffle(list);
+				
+				List<Character> coreList = Lists.newArrayList();
+				for(int i = 0; i < 5; i++) {
+					coreList.add(list.get(i));
+				}
+				deepList.add(coreList);
+			}
+			fragmentList.add(deepList);
+		}
+		return fragmentList;
 	}
 }

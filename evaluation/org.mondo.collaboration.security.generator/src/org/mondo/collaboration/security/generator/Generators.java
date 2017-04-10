@@ -48,6 +48,18 @@ public class Generators {
 		}		
 	}
 	
+	protected static int MaxD() {
+		return Integer.valueOf(mainArgs.get("MD"));
+	}
+	
+	protected static int MaxF() {
+		return Integer.valueOf(mainArgs.get("MF"));
+	}
+	
+	protected static int MaxU() {
+		return Integer.valueOf(mainArgs.get("MU"));
+	}
+	
 	protected static int F() {
 		return Integer.valueOf(mainArgs.get("F"));
 	}
@@ -61,19 +73,24 @@ public class Generators {
 	}
 	
 	public static void generateModels() throws Exception {
-		int[] users = {3,6,9,12};
-		int[] fragments = {3,6,9,12,15,18};
-		int[] deeps = {3,6,9,12,15,18};
+		int[] users = {12};
+		int[] fragments = {3,12,18};
+		int[] deeps = {3,9,12};
 		
-		for(int u = 0; u < users.length; u++)
-			for(int f = 0; f < fragments.length; f++) 
-				for(int d = 0; d < deeps.length; d++) {
+		mainArgs.put("MF",String.valueOf(fragments[fragments.length-1]));
+		mainArgs.put("MD",String.valueOf(deeps[deeps.length-1]));
+		mainArgs.put("MU",String.valueOf(users[users.length-1]));
+		
+		ModelGenerator.preGenerateAttributes(MaxD(), MaxF(), MaxU());
+		for(int f = 0; f < fragments.length; f++) 
+			for(int d = 0; d < deeps.length; d++) {
+				for(int u = 0; u < users.length; u++)
 					generateModel(fragments[f], deeps[d], users[u]);
 				}
 	}
 	
 	private static void generateModel(int f, int d, int u) throws Exception {
-		Composite model = ModelGenerator.generate(f,d,u);
+		Composite model = ModelGenerator.generate(f,u,d);
 		save(	String.format(System.getProperty("user.dir") + "/instances/model-%04d-%04d-%04d.xmi".replace('/', File.separatorChar), f,d,u), 
 				model);
 		

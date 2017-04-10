@@ -3,7 +3,6 @@ package org.mondo.collaboration.security.lock.eval.user.fbl;
 import java.util.Set;
 
 import org.eclipse.emf.ecore.resource.Resource;
-import org.eclipse.emf.ecore.util.EcoreUtil;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.lock.FileBasedLocker;
 import org.mondo.collaboration.security.lock.eval.user.UserType3;
@@ -12,12 +11,12 @@ import org.mondo.collaboration.security.query.LockOp3HelperMatcher;
 
 import com.google.common.collect.Sets;
 
-import wt.Control;
+import wt.Composite;
 
 public class UserType3FBL extends UserType3 {
 
 	private FileBasedLocker locker;
-	private Set<String> identifiers = Sets.newHashSet();
+	private Set<Object> identifiers = Sets.newHashSet();
 
 	public UserType3FBL(Resource model, String cycle, FileBasedLocker locker) {
 		super(model, cycle);
@@ -32,8 +31,8 @@ public class UserType3FBL extends UserType3 {
 			LockOp3HelperMatch filter = matcher.newEmptyMatch();
 			filter.setCycle(cycle);
 			
-			for (Control control : matcher.getAllValuesOfctrl(filter)) {
-				identifiers.add(EcoreUtil.getURI(control).fragment().split("/@")[1]);
+			for (Composite root : matcher.getAllValuesOffragment(filter)) {
+				identifiers.add(root);
 			}
 		} catch (IncQueryException e) {
 			e.printStackTrace();
