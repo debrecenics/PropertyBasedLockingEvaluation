@@ -73,19 +73,19 @@ public class Generators {
 	}
 	
 	public static void generateModels() throws Exception {
-		int[] users = {12};
-		int[] fragments = {3,12,18};
-		int[] deeps = {3,9,12};
+		int[] users = {9};
+		int[] fragments = {3,9};
+		int[] depths = {3,9};
 		
 		mainArgs.put("MF",String.valueOf(fragments[fragments.length-1]));
-		mainArgs.put("MD",String.valueOf(deeps[deeps.length-1]));
+		mainArgs.put("MD",String.valueOf(depths[depths.length-1]));
 		mainArgs.put("MU",String.valueOf(users[users.length-1]));
 		
-		ModelGenerator.preGenerateAttributes(MaxD(), MaxF(), MaxU());
 		for(int f = 0; f < fragments.length; f++) 
-			for(int d = 0; d < deeps.length; d++) {
+			for(int d = 0; d < depths.length; d++) {
+				ModelGenerator.preGenerateAttributes(depths[d], fragments[f], MaxU());
 				for(int u = 0; u < users.length; u++)
-					generateModel(fragments[f], deeps[d], users[u]);
+					generateModel(fragments[f], depths[d], users[u]);
 				}
 	}
 	

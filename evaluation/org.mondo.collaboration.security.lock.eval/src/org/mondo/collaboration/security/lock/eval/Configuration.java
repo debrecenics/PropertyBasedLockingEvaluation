@@ -18,20 +18,20 @@ public class Configuration {
 	public static TransactionalEditingDomain domain;
 	public static Map<String, List<Double>> Timings; 
 	
-	public static int Days = 10;
+	public static int Days = 7;
 	
-	public static int WaitMeanB =  24; //h
-	public static int WaitMeanD =  12; //h
+	public static int WaitMeanR =  24; //h
+	public static int WaitMeanT =  12; //h
 	public static int WaitMeanM =  4; //h
 	
-	public static int ExecMeanB =  3; //h
-	public static int ExecMeanD =  2; //h
+	public static int ExecMeanR =  3; //h
+	public static int ExecMeanT =  2; //h
 	public static int ExecMeanM =  1; //h
 	
 	public static void initiateTimings(int size) {
 		Timings = Maps.newHashMap();
-		populateTimingsTable(Timings,WaitMeanB,ExecMeanB,size,"B");
-		populateTimingsTable(Timings,WaitMeanD,ExecMeanD,size,"D");
+		populateTimingsTable(Timings,WaitMeanR,ExecMeanR,size,"R");
+		populateTimingsTable(Timings,WaitMeanT,ExecMeanT,size,"T");
 		populateTimingsTable(Timings,WaitMeanM,ExecMeanM,size,"M");
 	}
 

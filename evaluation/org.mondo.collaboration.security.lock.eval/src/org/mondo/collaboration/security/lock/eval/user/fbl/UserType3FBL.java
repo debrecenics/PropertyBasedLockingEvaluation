@@ -5,15 +5,13 @@ import java.util.Set;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.lock.FileBasedLocker;
-import org.mondo.collaboration.security.lock.eval.user.UserType3;
-import org.mondo.collaboration.security.query.LockOp3HelperMatch;
-import org.mondo.collaboration.security.query.LockOp3HelperMatcher;
+import org.mondo.collaboration.security.lock.eval.user.UserTypeMaintenance;
+import org.mondo.collaboration.security.query.LockOp3Match;
+import org.mondo.collaboration.security.query.LockOp3Matcher;
 
 import com.google.common.collect.Sets;
 
-import wt.Composite;
-
-public class UserType3FBL extends UserType3 {
+public class UserType3FBL extends UserTypeMaintenance {
 
 	private FileBasedLocker locker;
 	private Set<Object> identifiers = Sets.newHashSet();
@@ -27,12 +25,12 @@ public class UserType3FBL extends UserType3 {
 	protected boolean doAcquireLock() {
 		
 		try {
-			LockOp3HelperMatcher matcher = LockOp3HelperMatcher.on(engine);
-			LockOp3HelperMatch filter = matcher.newEmptyMatch();
+			LockOp3Matcher matcher = LockOp3Matcher.on(engine);
+			LockOp3Match filter = matcher.newEmptyMatch();
 			filter.setCycle(cycle);
 			
-			for (Composite root : matcher.getAllValuesOffragment(filter)) {
-				identifiers.add(root);
+			for (LockOp3Match match : matcher.getAllMatches(filter)) {
+				identifiers.add(UtilityFBL.getFragment(match.getSignal()));
 			}
 		} catch (IncQueryException e) {
 			e.printStackTrace();

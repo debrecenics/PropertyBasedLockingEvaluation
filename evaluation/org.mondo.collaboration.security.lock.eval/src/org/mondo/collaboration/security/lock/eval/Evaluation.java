@@ -11,7 +11,7 @@ import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.rank.Median;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
-import org.mondo.collaboration.security.lock.eval.simulation.ExecuteOperationWrapper;
+import org.mondo.collaboration.security.lock.eval.simulation.ReleaseLockOperationWrapper;
 import org.mondo.collaboration.security.lock.eval.simulation.LockRequestWrapper;
 import org.mondo.collaboration.security.lock.eval.simulation.Simulation;
 import org.mondo.collaboration.security.lock.eval.user.UserType;
@@ -30,31 +30,36 @@ public class Evaluation {
 	public static void main(String[] args) throws InterruptedException, InvocationTargetException, IncQueryException {
 		processArgs(args);
 
-		System.out.println("Type,Fragment,Deep,User,Accepted,Declined");
+		System.out.println("Type,Fragment,depth,User,Accepted,Declined");
 
 		DecimalFormat df = new DecimalFormat("0.000");
 
 		if (mainArgs.containsKey("F") && mainArgs.containsKey("D") && mainArgs.containsKey("U")) {
 			for (int i = 0; i < R(); i++) {
 				Configuration.initiateTimings(U());
-
-				ObjectBasedLockingEvaluation.main(args);
+                System.gc();
+                System.gc();
+                ObjectBasedLockingEvaluation.main(args);
+				System.gc();
+				System.gc();
 				PropertyBasedLockingEvaluation.main(args);
+				System.gc();
+				System.gc();
 				FileBasedLockingEvaluation.main(args);
 			}
 		} else {
-			int[] users = {3, 9, 12 };
-			int[] fragments = {3, 12, 18};
-			int[] deeps = {3, 9, 12};
-			int repeat = 10;
+			int[] users = {3, 9};
+			int[] fragments = {3, 9};
+			int[] depths = {3, 9};
+			int repeat = 5;
 
-			mainArgs.put("Max", "12");
+			mainArgs.put("Max", "9");
 
 			Configuration.initiateTimings(Max());
 			reinitBindings(Max());
 
 			for (int f = 0; f < fragments.length; f++) {
-				for (int d = 0; d < deeps.length; d++) {
+				for (int d = 0; d < depths.length; d++) {
 					for (int u = 0; u < users.length; u++) {
 						List<Double> objectBased = Lists.newArrayList();
 						List<Double> propertyBased = Lists.newArrayList();
@@ -62,7 +67,7 @@ public class Evaluation {
 						for (int i = 0; i < repeat; i++) {
 
 							mainArgs.put("F", String.valueOf(fragments[f]));
-							mainArgs.put("D", String.valueOf(deeps[d]));
+							mainArgs.put("D", String.valueOf(depths[d]));
 							mainArgs.put("U", String.valueOf(users[u]));
 
 							Configuration.initiateTimings(U());
@@ -78,9 +83,9 @@ public class Evaluation {
 							Double fb = new Double(FileBasedLockingEvaluation.ratio);
 							fileBased.add(fb);
 
-//							System.out.println((i + 1) + "," + F() + "," + D() + "," + U() + ","
-//									+ df.format(ob).replace(',', '.') + "," + df.format(pb).replace(',', '.') + ","
-//									+ df.format(fb).replace(',', '.'));
+							System.out.println((i + 1) + "," + F() + "," + D() + "," + U() + ","
+									+ df.format(ob).replace(',', '.') + "," + df.format(pb).replace(',', '.') + ","
+									+ df.format(fb).replace(',', '.'));
 
 						}
 						Median median = new Median();
@@ -122,7 +127,7 @@ public class Evaluation {
 				Double waitTime = iterator.next();
 				Evaluation.simulation.addWrapper(new LockRequestWrapper(user, lastTime + waitTime));
 				Double execTime = iterator.next();
-				Evaluation.simulation.addWrapper(new ExecuteOperationWrapper(user, lastTime + waitTime + execTime));
+				Evaluation.simulation.addWrapper(new ReleaseLockOperationWrapper(user, lastTime + waitTime + execTime));
 				lastTime = lastTime + waitTime + execTime;
 			}
 		}

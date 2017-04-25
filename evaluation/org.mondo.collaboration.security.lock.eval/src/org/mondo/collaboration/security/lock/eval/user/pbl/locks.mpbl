@@ -1,17 +1,17 @@
 user userM1 user userM2 user userM3 user userM4 user userM5 user userM6 user userM7 user userM8 user userM9 user userM10 user userM11 user userM12 user userM13 user userM14 user userM15
-user userB1 user userB2 user userB3 user userB4 user userB5 user userB6 user userB7 user userB8 user userB9 user userB10 user userB11 user userB12 user userB13 user userB14 user userB15
-user userD1 user userD2 user userD3 user userD4 user userD5 user userD6 user userD7 user userD8 user userD9 user userD10 user userD11 user userD12 user userD13 user userD14 user userD15
+user userT1 user userT2 user userT3 user userT4 user userT5 user userT6 user userT7 user userT8 user userT9 user userT10 user userT11 user userT12 user userT13 user userT14 user userT15
+user userR1 user userR2 user userR3 user userR4 user userR5 user userR6 user userR7 user userR8 user userR9 user userR10 user userR11 user userR12 user userR13 user userR14 user userR15
 
 group UserTypeM {
 	userM1, userM2, userM3, userM4, userM5, userM6, userM7, userM8, userM8, userM9, userM10, userM11, userM12, userM13, userM14, userM14
 }
 
-group UserTypeB {
-	userB1, userB2, userB3, userB4, userB5, userB6, userB7, userB8, userB8, userB9, userB10, userB11, userB12, userB13, userB14, userB14
+group UserTypeT {
+	userT1, userT2, userT3, userT4, userT5, userT6, userT7, userT8, userT8, userT9, userT10, userT11, userT12, userT13, userT14, userT14
 }
 
-group UserTypeD {
-	userD1, userD2, userD3, userD4, userD5, userD6, userD7, userD8, userD8, userD9, userD10, userD11, userD12, userD13, userD14, userD14
+group UserTypeR {
+	userR1, userR2, userR3, userR4, userR5, userR6, userR7, userR8, userR8, userR9, userR10, userR11, userR12, userR13, userR14, userR14
 }
 
 locks {

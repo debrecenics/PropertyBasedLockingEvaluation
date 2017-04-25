@@ -3,16 +3,45 @@ package org.mondo.collaboration.security.query
 import "http://wt/access-control"
 import "http://www.eclipse.org/emf/2002/Ecore"
 
-pattern lockOp1(signal :Signal, type) {
-	Control.type(ctrl, type);
-	Control.provides(ctrl, signal);
+pattern lockOp1(ctrl1 : Control, signal : Signal, ctrl2 : Control, type) {
+	Control.type(ctrl1, type);
+	Control.type(ctrl2, type);
+	Control.provides(ctrl2, signal);
 }
 
-pattern lockOp2(vendor, control : Control) {
+pattern lockOp2(vendor, object, composite : Composite) {
 	Composite.vendor(composite,vendor);
-	neg find containedBy(_,root);
-	Composite.submodules(root,composite);
-	find containedBy+(composite,control);
+	find containedBy+(composite,object);
+}
+
+pattern lockOp2ControlCycle(vendor, object, cycle, composite : Composite) {
+	Composite.vendor(composite,vendor);
+	find containedBy+(composite,object);
+	Control.cycle(object, cycle);
+}
+
+pattern lockOp2ControlType(vendor, object : Control, type, composite : Composite) {
+	Composite.vendor(composite,vendor);
+	find containedBy+(composite,object);
+	Control.type(object, type);
+}
+
+pattern lockOp2ControlProvide(vendor, object : Control, signal : Signal, composite : Composite) {
+	Composite.vendor(composite,vendor);
+	find containedBy+(composite,object);
+	Control.provides(object, signal);
+}
+
+pattern lockOp2ControlConsume(vendor, object, signal : Signal, composite : Composite) {
+	Composite.vendor(composite,vendor);
+	find containedBy+(composite,object);
+	Control.consumes(object, signal);
+}
+
+pattern lockOp2SignalFrequency(vendor, object : Signal, frequency, composite : Composite) {
+	Composite.vendor(composite,vendor);
+	find containedBy+(composite,object);
+	Signal.frequency(object, frequency);
 }
 
 pattern lockOp3(signal :Signal, cycle, value) {
@@ -21,15 +50,9 @@ pattern lockOp3(signal :Signal, cycle, value) {
 	Signal.frequency(signal, value);
 }
 
-pattern lockOp1Helper(signal :Signal, ctrl :Control, type) {
-	Control.type(ctrl, type);
-	Control.provides(ctrl, signal);
-}
-
-pattern lockOp3Helper(signal :Signal, cycle, value, ctrl :Control) {
-	Control.cycle(ctrl, cycle);
-	Control.provides(ctrl, signal);
-	Signal.frequency(signal, value);
+pattern fragment(fragment) {
+	neg find containedBy(_,root);
+	Composite.submodules(root,fragment);
 }
 
 pattern containedBy(parent,child) {	
