@@ -38,13 +38,13 @@ public class ObjectBasedLockingEvaluation extends Evaluation {
 		for(int i = 1; i <= U(); i++) {
 			char bind = getUniqueBinding(i,"t");
 			UserType user = new UserType1OBL(resource, "type"+bind, locker).init();
-			user.setName("userB"+i);
+			user.setName("userT"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
 			char bind = getUniqueBinding(i,"v");
 			UserType user = new UserType2OBL(resource, "vendor"+bind, locker).init();
-			user.setName("userD"+i);
+			user.setName("userR"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {

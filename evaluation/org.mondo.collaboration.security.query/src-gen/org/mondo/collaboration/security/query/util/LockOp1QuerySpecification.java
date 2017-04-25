@@ -60,7 +60,7 @@ public final class LockOp1QuerySpecification extends BaseGeneratedEMFQuerySpecif
   
   @Override
   public LockOp1Match newMatch(final Object... parameters) {
-    return LockOp1Match.newMatch((wt.Signal) parameters[0], (java.lang.String) parameters[1]);
+    return LockOp1Match.newMatch((wt.Control) parameters[0], (wt.Signal) parameters[1], (wt.Control) parameters[2], (java.lang.String) parameters[3]);
   }
   
   private static class LazyHolder {
@@ -81,12 +81,12 @@ public final class LockOp1QuerySpecification extends BaseGeneratedEMFQuerySpecif
     
     @Override
     public List<String> getParameterNames() {
-      return Arrays.asList("signal","type");
+      return Arrays.asList("ctrl1","signal","ctrl2","type");
     }
     
     @Override
     public List<PParameter> getParameters() {
-      return Arrays.asList(new PParameter("signal", "wt.Signal"),new PParameter("type", "java.lang.String"));
+      return Arrays.asList(new PParameter("ctrl1", "wt.Control"),new PParameter("signal", "wt.Signal"),new PParameter("ctrl2", "wt.Control"),new PParameter("type", "java.lang.String"));
     }
     
     @Override
@@ -95,24 +95,34 @@ public final class LockOp1QuerySpecification extends BaseGeneratedEMFQuerySpecif
       try {
       	{
       		PBody body = new PBody(this);
+      		PVariable var_ctrl1 = body.getOrCreateVariableByName("ctrl1");
       		PVariable var_signal = body.getOrCreateVariableByName("signal");
+      		PVariable var_ctrl2 = body.getOrCreateVariableByName("ctrl2");
       		PVariable var_type = body.getOrCreateVariableByName("type");
-      		PVariable var_ctrl = body.getOrCreateVariableByName("ctrl");
+      		new TypeConstraint(body, new FlatTuple(var_ctrl1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
       		new TypeConstraint(body, new FlatTuple(var_signal), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Signal")));
+      		new TypeConstraint(body, new FlatTuple(var_ctrl2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
       		body.setSymbolicParameters(Arrays.<ExportedParameter>asList(
+      		   new ExportedParameter(body, var_ctrl1, "ctrl1"),
       		   new ExportedParameter(body, var_signal, "signal"),
+      		   new ExportedParameter(body, var_ctrl2, "ctrl2"),
       		   new ExportedParameter(body, var_type, "type")
       		));
-      		// 	Control.type(ctrl, type)
-      		new TypeConstraint(body, new FlatTuple(var_ctrl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
+      		// 	Control.type(ctrl1, type)
+      		new TypeConstraint(body, new FlatTuple(var_ctrl1), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
       		PVariable var__virtual_0_ = body.getOrCreateVariableByName(".virtual{0}");
-      		new TypeConstraint(body, new FlatTuple(var_ctrl, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Control", "type")));
+      		new TypeConstraint(body, new FlatTuple(var_ctrl1, var__virtual_0_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Control", "type")));
       		new Equality(body, var__virtual_0_, var_type);
-      		// 	Control.provides(ctrl, signal)
-      		new TypeConstraint(body, new FlatTuple(var_ctrl), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
+      		// 	Control.type(ctrl2, type)
+      		new TypeConstraint(body, new FlatTuple(var_ctrl2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
       		PVariable var__virtual_1_ = body.getOrCreateVariableByName(".virtual{1}");
-      		new TypeConstraint(body, new FlatTuple(var_ctrl, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Module", "provides")));
-      		new Equality(body, var__virtual_1_, var_signal);
+      		new TypeConstraint(body, new FlatTuple(var_ctrl2, var__virtual_1_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Control", "type")));
+      		new Equality(body, var__virtual_1_, var_type);
+      		// 	Control.provides(ctrl2, signal)
+      		new TypeConstraint(body, new FlatTuple(var_ctrl2), new EClassTransitiveInstancesKey((EClass)getClassifierLiteral("http://wt/access-control", "Control")));
+      		PVariable var__virtual_2_ = body.getOrCreateVariableByName(".virtual{2}");
+      		new TypeConstraint(body, new FlatTuple(var_ctrl2, var__virtual_2_), new EStructuralFeatureInstancesKey(getFeatureLiteral("http://wt/access-control", "Module", "provides")));
+      		new Equality(body, var__virtual_2_, var_signal);
       		bodies.add(body);
       	}
       	// to silence compiler error

@@ -21,6 +21,7 @@ public class ObjectBasedLocker {
 			lock.put(id, user);
 		}
 		if(identifiers.isEmpty()) {
+			System.out.println("EmptyObject" + user);
 			return false;	
 		}
 		

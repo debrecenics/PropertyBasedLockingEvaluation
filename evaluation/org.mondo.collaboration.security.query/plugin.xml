@@ -2,4 +2,7 @@
   <extension id="org.mondo.collaboration.security.query.LockQueries" point="org.eclipse.incquery.runtime.queryspecification">
     <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:org.mondo.collaboration.security.query.LockQueries" id="org.mondo.collaboration.security.query.LockQueries"/>
   </extension>
+  <extension id="org.mondo.collaboration.security.query.Temp" point="org.eclipse.incquery.runtime.queryspecification">
+    <group group="org.eclipse.incquery.runtime.extensibility.SingletonExtensionFactory:org.mondo.collaboration.security.query.Temp" id="org.mondo.collaboration.security.query.Temp"/>
+  </extension>
 </plugin>

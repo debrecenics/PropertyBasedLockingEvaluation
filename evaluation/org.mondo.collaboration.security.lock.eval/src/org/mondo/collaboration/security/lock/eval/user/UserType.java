@@ -68,16 +68,19 @@ public abstract class UserType {
 	}
 	
 	public final boolean operate() {
-		if(!lockGranted) return false;
+		if(!lockGranted) 
+			return false;
 		
 		RecordingCommandExtension command = new RecordingCommandExtension(Configuration.domain);
 		Configuration.domain.getCommandStack().execute(command);
 		if(command.lockViolated) {
-			setDeclined(getDeclined() + 1);
+			if(dir == Direction.FORWARD)
+				setDeclined(getDeclined() + 1);
 			Configuration.domain.getCommandStack().undo();
 			return false;
 		} else {
-			setAccepted(getAccepted() + 1);
+			if(dir == Direction.FORWARD)
+				setAccepted(getAccepted() + 1);
 			return true;
 		}
 	}

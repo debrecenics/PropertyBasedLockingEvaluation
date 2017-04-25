@@ -12,34 +12,37 @@ import org.eclipse.incquery.runtime.api.impl.BaseMatcher;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
-import org.mondo.collaboration.security.query.LockOp2Match;
-import org.mondo.collaboration.security.query.util.LockOp2QuerySpecification;
+import org.mondo.collaboration.security.query.LockOp2ControlConsumeMatch;
+import org.mondo.collaboration.security.query.util.LockOp2ControlConsumeQuerySpecification;
 import wt.Composite;
+import wt.Control;
+import wt.Signal;
 
 /**
- * Generated pattern matcher API of the org.mondo.collaboration.security.query.lockOp2 pattern,
+ * Generated pattern matcher API of the org.mondo.collaboration.security.query.lockOp2ControlConsume pattern,
  * providing pattern-specific query methods.
  * 
  * <p>Use the pattern matcher on a given model via {@link #on(IncQueryEngine)},
  * e.g. in conjunction with {@link IncQueryEngine#on(Notifier)}.
  * 
- * <p>Matches of the pattern will be represented as {@link LockOp2Match}.
+ * <p>Matches of the pattern will be represented as {@link LockOp2ControlConsumeMatch}.
  * 
  * <p>Original source:
  * <code><pre>
- * pattern lockOp2(vendor, object, composite : Composite) {
+ * pattern lockOp2ControlConsume(vendor, object, signal : Signal, composite : Composite) {
  * 	Composite.vendor(composite,vendor);
  * 	find containedBy+(composite,object);
+ * 	Control.consumes(object, signal);
  * }
  * </pre></code>
  * 
- * @see LockOp2Match
- * @see LockOp2Processor
- * @see LockOp2QuerySpecification
+ * @see LockOp2ControlConsumeMatch
+ * @see LockOp2ControlConsumeProcessor
+ * @see LockOp2ControlConsumeQuerySpecification
  * 
  */
 @SuppressWarnings("all")
-public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
+public class LockOp2ControlConsumeMatcher extends BaseMatcher<LockOp2ControlConsumeMatch> {
   /**
    * Initializes the pattern matcher within an existing EMF-IncQuery engine.
    * If the pattern matcher is already constructed in the engine, only a light-weight reference is returned.
@@ -48,11 +51,11 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @throws IncQueryException if an error occurs during pattern matcher creation
    * 
    */
-  public static LockOp2Matcher on(final IncQueryEngine engine) throws IncQueryException {
+  public static LockOp2ControlConsumeMatcher on(final IncQueryEngine engine) throws IncQueryException {
     // check if matcher already exists
-    LockOp2Matcher matcher = engine.getExistingMatcher(querySpecification());
+    LockOp2ControlConsumeMatcher matcher = engine.getExistingMatcher(querySpecification());
     if (matcher == null) {
-    	matcher = new LockOp2Matcher(engine);
+    	matcher = new LockOp2ControlConsumeMatcher(engine);
     	// do not have to "put" it into engine.matchers, reportMatcherInitialized() will take care of it
     }
     return matcher;
@@ -62,9 +65,11 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
   
   private final static int POSITION_OBJECT = 1;
   
-  private final static int POSITION_COMPOSITE = 2;
+  private final static int POSITION_SIGNAL = 2;
   
-  private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(LockOp2Matcher.class);
+  private final static int POSITION_COMPOSITE = 3;
+  
+  private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(LockOp2ControlConsumeMatcher.class);
   
   /**
    * Initializes the pattern matcher over a given EMF model root (recommended: Resource or ResourceSet).
@@ -79,7 +84,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * 
    */
   @Deprecated
-  public LockOp2Matcher(final Notifier emfRoot) throws IncQueryException {
+  public LockOp2ControlConsumeMatcher(final Notifier emfRoot) throws IncQueryException {
     this(IncQueryEngine.on(emfRoot));
   }
   
@@ -93,7 +98,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * 
    */
   @Deprecated
-  public LockOp2Matcher(final IncQueryEngine engine) throws IncQueryException {
+  public LockOp2ControlConsumeMatcher(final IncQueryEngine engine) throws IncQueryException {
     super(engine, querySpecification());
   }
   
@@ -101,12 +106,13 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
-   * @return matches represented as a LockOp2Match object.
+   * @return matches represented as a LockOp2ControlConsumeMatch object.
    * 
    */
-  public Collection<LockOp2Match> getAllMatches(final String pVendor, final Object pObject, final Composite pComposite) {
-    return rawGetAllMatches(new Object[]{pVendor, pObject, pComposite});
+  public Collection<LockOp2ControlConsumeMatch> getAllMatches(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite) {
+    return rawGetAllMatches(new Object[]{pVendor, pObject, pSignal, pComposite});
   }
   
   /**
@@ -114,12 +120,13 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
-   * @return a match represented as a LockOp2Match object, or null if no match is found.
+   * @return a match represented as a LockOp2ControlConsumeMatch object, or null if no match is found.
    * 
    */
-  public LockOp2Match getOneArbitraryMatch(final String pVendor, final Object pObject, final Composite pComposite) {
-    return rawGetOneArbitraryMatch(new Object[]{pVendor, pObject, pComposite});
+  public LockOp2ControlConsumeMatch getOneArbitraryMatch(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite) {
+    return rawGetOneArbitraryMatch(new Object[]{pVendor, pObject, pSignal, pComposite});
   }
   
   /**
@@ -127,36 +134,39 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * under any possible substitution of the unspecified parameters (if any).
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final String pVendor, final Object pObject, final Composite pComposite) {
-    return rawHasMatch(new Object[]{pVendor, pObject, pComposite});
+  public boolean hasMatch(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite) {
+    return rawHasMatch(new Object[]{pVendor, pObject, pSignal, pComposite});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final String pVendor, final Object pObject, final Composite pComposite) {
-    return rawCountMatches(new Object[]{pVendor, pObject, pComposite});
+  public int countMatches(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite) {
+    return rawCountMatches(new Object[]{pVendor, pObject, pSignal, pComposite});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final String pVendor, final Object pObject, final Composite pComposite, final IMatchProcessor<? super LockOp2Match> processor) {
-    rawForEachMatch(new Object[]{pVendor, pObject, pComposite}, processor);
+  public void forEachMatch(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite, final IMatchProcessor<? super LockOp2ControlConsumeMatch> processor) {
+    rawForEachMatch(new Object[]{pVendor, pObject, pSignal, pComposite}, processor);
   }
   
   /**
@@ -164,13 +174,14 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * Neither determinism nor randomness of selection is guaranteed.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final String pVendor, final Object pObject, final Composite pComposite, final IMatchProcessor<? super LockOp2Match> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pVendor, pObject, pComposite}, processor);
+  public boolean forOneArbitraryMatch(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite, final IMatchProcessor<? super LockOp2ControlConsumeMatch> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pVendor, pObject, pSignal, pComposite}, processor);
   }
   
   /**
@@ -179,12 +190,13 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
    * @param pVendor the fixed value of pattern parameter vendor, or null if not bound.
    * @param pObject the fixed value of pattern parameter object, or null if not bound.
+   * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
    * @param pComposite the fixed value of pattern parameter composite, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public LockOp2Match newMatch(final String pVendor, final Object pObject, final Composite pComposite) {
-    return LockOp2Match.newMatch(pVendor, pObject, pComposite);
+  public LockOp2ControlConsumeMatch newMatch(final String pVendor, final Control pObject, final Signal pSignal, final Composite pComposite) {
+    return LockOp2ControlConsumeMatch.newMatch(pVendor, pObject, pSignal, pComposite);
   }
   
   /**
@@ -212,7 +224,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfvendor(final LockOp2Match partialMatch) {
+  public Set<String> getAllValuesOfvendor(final LockOp2ControlConsumeMatch partialMatch) {
     return rawAccumulateAllValuesOfvendor(partialMatch.toArray());
   }
   
@@ -221,10 +233,11 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOfvendor(final Object pObject, final Composite pComposite) {
+  public Set<String> getAllValuesOfvendor(final Control pObject, final Signal pSignal, final Composite pComposite) {
     return rawAccumulateAllValuesOfvendor(new Object[]{
     null, 
     pObject, 
+    pSignal, 
     pComposite
     });
   }
@@ -234,8 +247,8 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  protected Set<Object> rawAccumulateAllValuesOfobject(final Object[] parameters) {
-    Set<Object> results = new HashSet<Object>();
+  protected Set<Control> rawAccumulateAllValuesOfobject(final Object[] parameters) {
+    Set<Control> results = new HashSet<Control>();
     rawAccumulateAllValues(POSITION_OBJECT, parameters, results);
     return results;
   }
@@ -245,7 +258,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Object> getAllValuesOfobject() {
+  public Set<Control> getAllValuesOfobject() {
     return rawAccumulateAllValuesOfobject(emptyArray());
   }
   
@@ -254,7 +267,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Object> getAllValuesOfobject(final LockOp2Match partialMatch) {
+  public Set<Control> getAllValuesOfobject(final LockOp2ControlConsumeMatch partialMatch) {
     return rawAccumulateAllValuesOfobject(partialMatch.toArray());
   }
   
@@ -263,9 +276,53 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Object> getAllValuesOfobject(final String pVendor, final Composite pComposite) {
+  public Set<Control> getAllValuesOfobject(final String pVendor, final Signal pSignal, final Composite pComposite) {
     return rawAccumulateAllValuesOfobject(new Object[]{
     pVendor, 
+    null, 
+    pSignal, 
+    pComposite
+    });
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Signal> rawAccumulateAllValuesOfsignal(final Object[] parameters) {
+    Set<Signal> results = new HashSet<Signal>();
+    rawAccumulateAllValues(POSITION_SIGNAL, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal() {
+    return rawAccumulateAllValuesOfsignal(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal(final LockOp2ControlConsumeMatch partialMatch) {
+    return rawAccumulateAllValuesOfsignal(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for signal.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Signal> getAllValuesOfsignal(final String pVendor, final Control pObject, final Composite pComposite) {
+    return rawAccumulateAllValuesOfsignal(new Object[]{
+    pVendor, 
+    pObject, 
     null, 
     pComposite
     });
@@ -296,7 +353,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Composite> getAllValuesOfcomposite(final LockOp2Match partialMatch) {
+  public Set<Composite> getAllValuesOfcomposite(final LockOp2ControlConsumeMatch partialMatch) {
     return rawAccumulateAllValuesOfcomposite(partialMatch.toArray());
   }
   
@@ -305,18 +362,19 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Composite> getAllValuesOfcomposite(final String pVendor, final Object pObject) {
+  public Set<Composite> getAllValuesOfcomposite(final String pVendor, final Control pObject, final Signal pSignal) {
     return rawAccumulateAllValuesOfcomposite(new Object[]{
     pVendor, 
     pObject, 
+    pSignal, 
     null
     });
   }
   
   @Override
-  protected LockOp2Match tupleToMatch(final Tuple t) {
+  protected LockOp2ControlConsumeMatch tupleToMatch(final Tuple t) {
     try {
-    	return LockOp2Match.newMatch((java.lang.String) t.get(POSITION_VENDOR), (java.lang.Object) t.get(POSITION_OBJECT), (wt.Composite) t.get(POSITION_COMPOSITE));
+    	return LockOp2ControlConsumeMatch.newMatch((java.lang.String) t.get(POSITION_VENDOR), (wt.Control) t.get(POSITION_OBJECT), (wt.Signal) t.get(POSITION_SIGNAL), (wt.Composite) t.get(POSITION_COMPOSITE));
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in tuple not properly typed!",e);
     	return null;
@@ -324,9 +382,9 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
   }
   
   @Override
-  protected LockOp2Match arrayToMatch(final Object[] match) {
+  protected LockOp2ControlConsumeMatch arrayToMatch(final Object[] match) {
     try {
-    	return LockOp2Match.newMatch((java.lang.String) match[POSITION_VENDOR], (java.lang.Object) match[POSITION_OBJECT], (wt.Composite) match[POSITION_COMPOSITE]);
+    	return LockOp2ControlConsumeMatch.newMatch((java.lang.String) match[POSITION_VENDOR], (wt.Control) match[POSITION_OBJECT], (wt.Signal) match[POSITION_SIGNAL], (wt.Composite) match[POSITION_COMPOSITE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;
@@ -334,9 +392,9 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
   }
   
   @Override
-  protected LockOp2Match arrayToMatchMutable(final Object[] match) {
+  protected LockOp2ControlConsumeMatch arrayToMatchMutable(final Object[] match) {
     try {
-    	return LockOp2Match.newMutableMatch((java.lang.String) match[POSITION_VENDOR], (java.lang.Object) match[POSITION_OBJECT], (wt.Composite) match[POSITION_COMPOSITE]);
+    	return LockOp2ControlConsumeMatch.newMutableMatch((java.lang.String) match[POSITION_VENDOR], (wt.Control) match[POSITION_OBJECT], (wt.Signal) match[POSITION_SIGNAL], (wt.Composite) match[POSITION_COMPOSITE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;
@@ -348,7 +406,7 @@ public class LockOp2Matcher extends BaseMatcher<LockOp2Match> {
    * @throws IncQueryException if the pattern definition could not be loaded
    * 
    */
-  public static IQuerySpecification<LockOp2Matcher> querySpecification() throws IncQueryException {
-    return LockOp2QuerySpecification.instance();
+  public static IQuerySpecification<LockOp2ControlConsumeMatcher> querySpecification() throws IncQueryException {
+    return LockOp2ControlConsumeQuerySpecification.instance();
   }
 }

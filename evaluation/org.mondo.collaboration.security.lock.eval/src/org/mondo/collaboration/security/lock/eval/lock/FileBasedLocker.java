@@ -21,6 +21,7 @@ public class FileBasedLocker {
 			lock.put(id, user);
 		}
 		if(identifiers.isEmpty()) {
+			System.out.println("EmptyFile");
 			return false;	
 		}
 		return true;

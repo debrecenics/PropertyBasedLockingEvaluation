@@ -5,7 +5,7 @@ import java.util.Set;
 import org.eclipse.emf.ecore.resource.Resource;
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.lock.ObjectBasedLocker;
-import org.mondo.collaboration.security.lock.eval.user.UserType3;
+import org.mondo.collaboration.security.lock.eval.user.UserTypeMaintenance;
 import org.mondo.collaboration.security.query.LockOp3Match;
 import org.mondo.collaboration.security.query.LockOp3Matcher;
 
@@ -13,7 +13,7 @@ import com.google.common.collect.Sets;
 
 import wt.Signal;
 
-public class UserType3OBL extends UserType3 {
+public class UserType3OBL extends UserTypeMaintenance {
 
 	private ObjectBasedLocker locker;
 	private Set<Object> identifiers = Sets.newHashSet();

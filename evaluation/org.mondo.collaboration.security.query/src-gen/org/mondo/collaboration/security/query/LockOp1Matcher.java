@@ -14,6 +14,7 @@ import org.eclipse.incquery.runtime.matchers.tuple.Tuple;
 import org.eclipse.incquery.runtime.util.IncQueryLoggingUtil;
 import org.mondo.collaboration.security.query.LockOp1Match;
 import org.mondo.collaboration.security.query.util.LockOp1QuerySpecification;
+import wt.Control;
 import wt.Signal;
 
 /**
@@ -27,9 +28,10 @@ import wt.Signal;
  * 
  * <p>Original source:
  * <code><pre>
- * pattern lockOp1(signal :Signal, type) {
- * 	Control.type(ctrl, type);
- * 	Control.provides(ctrl, signal);
+ * pattern lockOp1(ctrl1 : Control, signal : Signal, ctrl2 : Control, type) {
+ * 	Control.type(ctrl1, type);
+ * 	Control.type(ctrl2, type);
+ * 	Control.provides(ctrl2, signal);
  * }
  * </pre></code>
  * 
@@ -58,9 +60,13 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
     return matcher;
   }
   
-  private final static int POSITION_SIGNAL = 0;
+  private final static int POSITION_CTRL1 = 0;
   
-  private final static int POSITION_TYPE = 1;
+  private final static int POSITION_SIGNAL = 1;
+  
+  private final static int POSITION_CTRL2 = 2;
+  
+  private final static int POSITION_TYPE = 3;
   
   private final static Logger LOGGER = IncQueryLoggingUtil.getLogger(LockOp1Matcher.class);
   
@@ -97,85 +103,142 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
   
   /**
    * Returns the set of all matches of the pattern that conform to the given fixed values of some parameters.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return matches represented as a LockOp1Match object.
    * 
    */
-  public Collection<LockOp1Match> getAllMatches(final Signal pSignal, final String pType) {
-    return rawGetAllMatches(new Object[]{pSignal, pType});
+  public Collection<LockOp1Match> getAllMatches(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType) {
+    return rawGetAllMatches(new Object[]{pCtrl1, pSignal, pCtrl2, pType});
   }
   
   /**
    * Returns an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return a match represented as a LockOp1Match object, or null if no match is found.
    * 
    */
-  public LockOp1Match getOneArbitraryMatch(final Signal pSignal, final String pType) {
-    return rawGetOneArbitraryMatch(new Object[]{pSignal, pType});
+  public LockOp1Match getOneArbitraryMatch(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType) {
+    return rawGetOneArbitraryMatch(new Object[]{pCtrl1, pSignal, pCtrl2, pType});
   }
   
   /**
    * Indicates whether the given combination of specified pattern parameters constitute a valid pattern match,
    * under any possible substitution of the unspecified parameters (if any).
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return true if the input is a valid (partial) match of the pattern.
    * 
    */
-  public boolean hasMatch(final Signal pSignal, final String pType) {
-    return rawHasMatch(new Object[]{pSignal, pType});
+  public boolean hasMatch(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType) {
+    return rawHasMatch(new Object[]{pCtrl1, pSignal, pCtrl2, pType});
   }
   
   /**
    * Returns the number of all matches of the pattern that conform to the given fixed values of some parameters.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the number of pattern matches found.
    * 
    */
-  public int countMatches(final Signal pSignal, final String pType) {
-    return rawCountMatches(new Object[]{pSignal, pType});
+  public int countMatches(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType) {
+    return rawCountMatches(new Object[]{pCtrl1, pSignal, pCtrl2, pType});
   }
   
   /**
    * Executes the given processor on each match of the pattern that conforms to the given fixed values of some parameters.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param processor the action that will process each pattern match.
    * 
    */
-  public void forEachMatch(final Signal pSignal, final String pType, final IMatchProcessor<? super LockOp1Match> processor) {
-    rawForEachMatch(new Object[]{pSignal, pType}, processor);
+  public void forEachMatch(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType, final IMatchProcessor<? super LockOp1Match> processor) {
+    rawForEachMatch(new Object[]{pCtrl1, pSignal, pCtrl2, pType}, processor);
   }
   
   /**
    * Executes the given processor on an arbitrarily chosen match of the pattern that conforms to the given fixed values of some parameters.
    * Neither determinism nor randomness of selection is guaranteed.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @param processor the action that will process the selected match.
    * @return true if the pattern has at least one match with the given parameter values, false if the processor was not invoked
    * 
    */
-  public boolean forOneArbitraryMatch(final Signal pSignal, final String pType, final IMatchProcessor<? super LockOp1Match> processor) {
-    return rawForOneArbitraryMatch(new Object[]{pSignal, pType}, processor);
+  public boolean forOneArbitraryMatch(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType, final IMatchProcessor<? super LockOp1Match> processor) {
+    return rawForOneArbitraryMatch(new Object[]{pCtrl1, pSignal, pCtrl2, pType}, processor);
   }
   
   /**
    * Returns a new (partial) match.
    * This can be used e.g. to call the matcher with a partial match.
    * <p>The returned match will be immutable. Use {@link #newEmptyMatch()} to obtain a mutable match object.
+   * @param pCtrl1 the fixed value of pattern parameter ctrl1, or null if not bound.
    * @param pSignal the fixed value of pattern parameter signal, or null if not bound.
+   * @param pCtrl2 the fixed value of pattern parameter ctrl2, or null if not bound.
    * @param pType the fixed value of pattern parameter type, or null if not bound.
    * @return the (partial) match object.
    * 
    */
-  public LockOp1Match newMatch(final Signal pSignal, final String pType) {
-    return LockOp1Match.newMatch(pSignal, pType);
+  public LockOp1Match newMatch(final Control pCtrl1, final Signal pSignal, final Control pCtrl2, final String pType) {
+    return LockOp1Match.newMatch(pCtrl1, pSignal, pCtrl2, pType);
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl1.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Control> rawAccumulateAllValuesOfctrl1(final Object[] parameters) {
+    Set<Control> results = new HashSet<Control>();
+    rawAccumulateAllValues(POSITION_CTRL1, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl1.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl1() {
+    return rawAccumulateAllValuesOfctrl1(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl1.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl1(final LockOp1Match partialMatch) {
+    return rawAccumulateAllValuesOfctrl1(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl1.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl1(final Signal pSignal, final Control pCtrl2, final String pType) {
+    return rawAccumulateAllValuesOfctrl1(new Object[]{
+    null, 
+    pSignal, 
+    pCtrl2, 
+    pType
+    });
   }
   
   /**
@@ -212,8 +275,53 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<Signal> getAllValuesOfsignal(final String pType) {
+  public Set<Signal> getAllValuesOfsignal(final Control pCtrl1, final Control pCtrl2, final String pType) {
     return rawAccumulateAllValuesOfsignal(new Object[]{
+    pCtrl1, 
+    null, 
+    pCtrl2, 
+    pType
+    });
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl2.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  protected Set<Control> rawAccumulateAllValuesOfctrl2(final Object[] parameters) {
+    Set<Control> results = new HashSet<Control>();
+    rawAccumulateAllValues(POSITION_CTRL2, parameters, results);
+    return results;
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl2.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl2() {
+    return rawAccumulateAllValuesOfctrl2(emptyArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl2.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl2(final LockOp1Match partialMatch) {
+    return rawAccumulateAllValuesOfctrl2(partialMatch.toArray());
+  }
+  
+  /**
+   * Retrieve the set of values that occur in matches for ctrl2.
+   * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
+   * 
+   */
+  public Set<Control> getAllValuesOfctrl2(final Control pCtrl1, final Signal pSignal, final String pType) {
+    return rawAccumulateAllValuesOfctrl2(new Object[]{
+    pCtrl1, 
+    pSignal, 
     null, 
     pType
     });
@@ -253,9 +361,11 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
    * @return the Set of all values, null if no parameter with the given name exists, empty set if there are no matches
    * 
    */
-  public Set<String> getAllValuesOftype(final Signal pSignal) {
+  public Set<String> getAllValuesOftype(final Control pCtrl1, final Signal pSignal, final Control pCtrl2) {
     return rawAccumulateAllValuesOftype(new Object[]{
+    pCtrl1, 
     pSignal, 
+    pCtrl2, 
     null
     });
   }
@@ -263,7 +373,7 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
   @Override
   protected LockOp1Match tupleToMatch(final Tuple t) {
     try {
-    	return LockOp1Match.newMatch((wt.Signal) t.get(POSITION_SIGNAL), (java.lang.String) t.get(POSITION_TYPE));
+    	return LockOp1Match.newMatch((wt.Control) t.get(POSITION_CTRL1), (wt.Signal) t.get(POSITION_SIGNAL), (wt.Control) t.get(POSITION_CTRL2), (java.lang.String) t.get(POSITION_TYPE));
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in tuple not properly typed!",e);
     	return null;
@@ -273,7 +383,7 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
   @Override
   protected LockOp1Match arrayToMatch(final Object[] match) {
     try {
-    	return LockOp1Match.newMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_TYPE]);
+    	return LockOp1Match.newMatch((wt.Control) match[POSITION_CTRL1], (wt.Signal) match[POSITION_SIGNAL], (wt.Control) match[POSITION_CTRL2], (java.lang.String) match[POSITION_TYPE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;
@@ -283,7 +393,7 @@ public class LockOp1Matcher extends BaseMatcher<LockOp1Match> {
   @Override
   protected LockOp1Match arrayToMatchMutable(final Object[] match) {
     try {
-    	return LockOp1Match.newMutableMatch((wt.Signal) match[POSITION_SIGNAL], (java.lang.String) match[POSITION_TYPE]);
+    	return LockOp1Match.newMutableMatch((wt.Control) match[POSITION_CTRL1], (wt.Signal) match[POSITION_SIGNAL], (wt.Control) match[POSITION_CTRL2], (java.lang.String) match[POSITION_TYPE]);
     } catch(ClassCastException e) {
     	LOGGER.error("Element(s) in array not properly typed!",e);
     	return null;

@@ -13,9 +13,9 @@ import org.eclipse.incquery.patternlanguage.emf.EMFPatternLanguageStandaloneSetu
 import org.eclipse.incquery.runtime.exception.IncQueryException;
 import org.mondo.collaboration.security.lock.eval.lock.PropertyBasedLocker;
 import org.mondo.collaboration.security.lock.eval.user.UserType;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserType1PBL;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserType2PBL;
-import org.mondo.collaboration.security.lock.eval.user.pbl.UserType3PBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeTestPBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeReplacePBL;
+import org.mondo.collaboration.security.lock.eval.user.pbl.UserTypeMaintenancePBL;
 import org.mondo.collaboration.security.macl.xtext.AccessControlLanguageStandaloneSetup;
 import org.mondo.collaboration.security.mpbl.xtext.MondoPropertyBasedLockingStandaloneSetup;
 import org.mondo.collaboration.security.mpbl.xtext.mondoPropertyBasedLocking.PropertyBasedLockingModel;
@@ -59,20 +59,20 @@ public class PropertyBasedLockingEvaluation extends Evaluation {
 		List<UserType> users = Lists.newArrayList();
 		for(int i = 1; i <= U(); i++) {
 			char bind = getUniqueBinding(i,"c");
-			UserType user = new UserType3PBL(locker, resource, "cycle"+bind, "userM"+i).init();
+			UserType user = new UserTypeMaintenancePBL(locker, resource, "cycle"+bind, "userM"+i).init();
 			user.setName("userM"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
 			char bind = getUniqueBinding(i,"t");
-			UserType user = new UserType1PBL(locker, resource, "type"+bind, "userB"+i).init();
-			user.setName("userB"+i);
+			UserType user = new UserTypeTestPBL(locker, resource, "type"+bind, "userT"+i).init();
+			user.setName("userT"+i);
 			users.add(user);
 		}
 		for(int i = 1; i <= U(); i++) {
 			char bind = getUniqueBinding(i,"v");
-			UserType user = new UserType2PBL(locker, resource, "vendor"+bind, "userD"+i).init();
-			user.setName("userD"+i);
+			UserType user = new UserTypeReplacePBL(locker, resource, "vendor"+bind, "userR"+i).init();
+			user.setName("userR"+i);
 			users.add(user);
 		}
 		
