@@ -39,7 +39,7 @@ In the `*.meta` plugin project, open the `*.genmodel` file and generate the mode
 
 In the `*.query` plugin project, open the `*.vql` file and force to build the associated artifacts.
 
-## Generate Models
+#### Generate Models
 
 * In the `*.generator` plugin project, the `Generators.java` file has a `main` method that can be run. 
 * Modify the `generateModels()` method to select the output folder.
