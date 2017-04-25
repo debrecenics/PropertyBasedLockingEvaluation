@@ -1,4 +1,4 @@
-# Property Based Locking Evaluation 
+# Evaluation of Property Based Locking 
 Property-based Locking in Collaborative Modeling (MODELS2017 Conference)
 
 ## Abstract
